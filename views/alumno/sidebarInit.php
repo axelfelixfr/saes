@@ -11,7 +11,7 @@
                     </a>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link py-1 nav-ipn-item" href="#">General</a>
+                            <a class="nav-link py-1 nav-ipn-item" href="<?=base_url?>alumno/general">General</a>
                             <a class="nav-link py-1 nav-ipn-item" href="#">Médicos</a>
                             <a class="nav-link py-1 nav-ipn-item" href="#">Deportivos</a>
                         </nav>
@@ -132,26 +132,4 @@
     </div>
     <div id="layoutSidenav_content">
         <main>
-            <div class="container-fluid px-4">
-                <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-                <h1 class="mt-4">Datos personales</h1>
-                <ol class="breadcrumb mb-4">
-                    <li class="breadcrumb-item"><a href="index.html">Inicio</a></li>
-                    <li class="breadcrumb-item active">Datos personales</li>
-                </ol>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <p class="mb-0">
-                            Página de ejemplo
-                        </p>
-                    </div>
-                </div>
-                <div style="height: 100vh"></div>
-                <div class="card mb-4">
-                    <div class="card-body">When scrolling, the navigation stays at the top of the page. This is the end of
-                        the static navigation demo.</div>
-                </div>
-            </div>
-        </main>
-    </div>
-</div>
+            <div class="container pt-3">

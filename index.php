@@ -10,7 +10,6 @@ require_once 'config/parameters.php';
 require_once 'helpers/utils.php';
 require_once 'views/layout/header.php';
 
-
 if (isset($_GET['controller'])) {
     $nameController = $_GET['controller'].'Controller';
 } elseif (!isset($_GET['controller']) && !isset($_GET['action'])) {
@@ -19,7 +18,6 @@ if (isset($_GET['controller'])) {
     Utils::show_error();
     exit();
 }
-
 
 if (class_exists($nameController)) {
     $controlador = new $nameController();

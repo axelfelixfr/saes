@@ -74,17 +74,11 @@
                 <h2 class="text-warning text-center">Inicie Sesión <span class="text-success">para poder
                         continuar</span></h2>
                 <?php else : ?>
-                    <?php if (isset($_SESSION['profesor'])) : ?>
-                <h2 class="text-warning text-center">Bienvenido <span class="text-success">
+                <h2 class="text-warning text-center">Te damos la bienvenida <span class="text-success">
                         <?= $_SESSION['identity']->nombre ?>
                         <?= $_SESSION['identity']->apellidos ?></span></h2>
-                    <?php elseif (isset($_SESSION['alumno'])) :?>
-                <h2 class="text-warning text-center">Bienvenido <span class="text-success">
-                        <?= $_SESSION['identity']->nombre ?>
-                        <?= $_SESSION['identity']->apellidos ?></span></h2>
-                    <?php endif; ?>
                 <?php endif; ?>
-                <a href="<?=base_url?>user/logout">Cerrar sesión</a>
+                <!-- <a href="<?=base_url?>user/logout">Cerrar sesión</a> -->
             </div>
             <!-- Inicio del Login-->
             <?php if (!isset($_SESSION['identity'])) :?>

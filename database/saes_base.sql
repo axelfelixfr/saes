@@ -1,9 +1,15 @@
+CREATE DATABASE saes;
+USE saes;
+
 CREATE TABLE perfil(
 	id int auto_increment not null,
 	name varchar(50) not null,
 	CONSTRAINT pk_perfil PRIMARY KEY(id),
 	CONSTRAINT uq_name UNIQUE(name)
 )ENGINE=InnoDb DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO perfil VALUES(NULL, 'profesor');
+INSERT INTO perfil VALUES(NULL, 'alumno');
 
 CREATE TABLE usuario(
 	id int auto_increment not null,
@@ -30,6 +36,10 @@ CREATE TABLE usuario(
 	CONSTRAINT uq_cartilla UNIQUE(cartilla),
 	CONSTRAINT uq_pasaporte UNIQUE(pasaporte)
 )ENGINE=InnoDb DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO usuario VALUES(NULL, 'jalameda1829@alumno.ipn.mx', 'blacksea80', '2018500451', 'José Alejandro', 'Alameda Gomez', 'alumno', 'UPIICSA', 'AGJA000856HMCLMXA4', 'AGJA000856XA6', NULL, NULL, 'H', '1999-04-01', 'Ciudad de México');
+INSERT INTO usuario VALUES(NULL, 'mramirez7805@profesor.ipn.mx', 'grass30', 'AUSR000578XA9', 'María Luna', 'Sanchez Ramírez', 'profesor', 'UPIICSA', 'AUSR000578MMCLMXA9', 'AUSR000578XA9', NULL, NULL, 'M', '1985-10-01', 'Ciudad de México');
+
 
 CREATE TABLE escolaridad(
 	id int auto_increment not null,
@@ -70,5 +80,3 @@ CREATE TABLE direccion(
 	CONSTRAINT pk_direccion PRIMARY KEY(id),
 	CONSTRAINT fk_direccion_usuario FOREIGN KEY(usuario_id) REFERENCES usuario(id)
 )ENGINE=InnoDb DEFAULT CHARSET=utf8mb4;
-
-

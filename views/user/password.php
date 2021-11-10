@@ -16,7 +16,7 @@
             </div>
         </div>
     </div>
-    <div class="row justify-content-center align-items-center">
+    <div class="row justify-content-center align-items-center pb-3">
         <div class="col-auto">
             <div class="card m-3">
                 <div class="card-body">

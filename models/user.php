@@ -49,12 +49,7 @@ class User
         if ($login && $login->num_rows == 1) {
             $usuario = $login->fetch_object();
             
-            // Verificar la contraseña
-            // $verify = password_verify($password, $usuario->password);
-            
-            // if ($verify) {
-                $result = $usuario;
-            // }
+            $result = $usuario;
         }
         return $result;
     }

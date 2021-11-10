@@ -32,7 +32,7 @@
                         <a class="flex-sm-fill text-sm-center nav-link nav-item-hover active mx-2 mt-1 mt-md-0" href="<?=base_url?>">Inicio</a>
                         <?php if (isset($_SESSION['identity'])) :?>
                             <?php if (isset($_SESSION['profesor'])) : ?>
-                        <a class="flex-sm-fill text-sm-center nav-link nav-item-hover active mx-2 mt-1 mt-md-0" href="#">Profesores</a>
+                        <a class="flex-sm-fill text-sm-center nav-link nav-item-hover active mx-2 mt-1 mt-md-0" href="<?=base_url?>profesor/main">Profesores</a>
                             <?php elseif (isset($_SESSION['alumno'])) :?>
                         <a class="flex-sm-fill text-sm-center nav-link nav-item-hover active mx-2 mt-1 mt-md-0" href="<?=base_url?>alumno/main">Alumnos</a>
                             <?php endif; ?>

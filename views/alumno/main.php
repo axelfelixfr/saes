@@ -6,7 +6,7 @@
         </ol>
     </nav>
 </div>
-<div class="row">
+<div class="row pb-3">
     <div class="col-6 text-end">
         <h1 class="mb-5">Menú principal de alumnos</h1>
         <h2 class="text-warning">
@@ -23,10 +23,12 @@
         </div>
     </div>
 </div>
-<div class="row">
-    <div class="col-2">AVISO</div>
-    <div class="col-10">
+<div class="row p-2 m-3 small">
+    <div class="col-2 text-primary text-wrap d-flex">
+        <h1 class="align-self-center">AVISO</h1>
+    </div>
+    <div class="col-10 border-start border-3 border-primary">
         <p>Recuerda que la credencial del IPN te reconoce como alumno y es la forma de identificarte dentro del Instituto. Si la extraviaste puedes acudir a la Dirección de Administración Escolar a tramitarla</p>
-        <p>Atentamente. Dirección de Administración Escolar</p>
+        <p class="text-end">Atentamente. Dirección de Administración Escolar</p>
     </div>
 </div>

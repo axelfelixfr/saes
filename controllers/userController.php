@@ -32,7 +32,9 @@ class userController
             
             // Crear una sesión
             if ($identity && is_object($identity)) {
+                // Se guarda al usuario en identity
                 $_SESSION['identity'] = $identity;
+                // Se identifica si es profesor o alumno
                 if ($identity->perfil_name == 'profesor') {
                     $_SESSION['profesor'] = true;
                     header("Location:".base_url.'profesor/main');
@@ -40,8 +42,9 @@ class userController
                     $_SESSION['alumno'] = true;
                     header("Location:".base_url.'alumno/main');
                 }
+                // Algo fallo en el login
             } else {
-                $_SESSION['error_login'] = 'Checa bien los campos, identificación fallida!!!';
+                $_SESSION['error_login'] = 'Login fallo';
                 header("Location:".base_url);
             }
         } else {

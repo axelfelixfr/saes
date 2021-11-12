@@ -13,6 +13,7 @@ $morado: #673AB7;
 $rosa: #D81B60;
 $naranja: #FF6D00;
 $nuevoTeal:#00897B;
+
 // Fonts
 // Poppins
 @font-face {
@@ -22,7 +23,7 @@ $nuevoTeal:#00897B;
     font-weight: 200;
     font-display: swap;
 }
-  
+
 @font-face {
     font-family: 'Poppins';
     src: url('../fonts/Poppins/Poppins-Light.ttf');
@@ -30,7 +31,7 @@ $nuevoTeal:#00897B;
     font-weight: 300;
     font-display: swap;
 }
-  
+
 @font-face {
     font-family: 'Poppins';
     src: url('../fonts/Poppins/Poppins-Regular.ttf');
@@ -54,7 +55,7 @@ $nuevoTeal:#00897B;
     font-weight: 600;
     font-display: swap;
 }
-  
+
 @font-face {
     font-family: 'Poppins';
     src: url('../fonts/Poppins/Poppins-Bold.ttf');
@@ -151,9 +152,11 @@ $input-border-radius: 0.4rem;
 }
 
 @mixin border-button-func($varcolor) {
-    border-bottom: 3.5px solid lighten($varcolor, 13%);
+    border-bottom: 3.5px solid lighten($varcolor, 18%);
 
-    &:hover {
+    &:hover,
+    &:active,
+    &:visited {
         border-bottom: 3.75px solid lighten($varcolor, 9%);
     }
 }
@@ -212,7 +215,8 @@ $input-border-radius: 0.4rem;
 }
 
 
-.form-control {
+.form-control,
+.form-select {
     border: 1.9px solid #A7A6A7;
     // border: 1.9px solid #ced4da;
     transition: .18s ease-out;

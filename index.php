@@ -3,11 +3,24 @@
 ob_start();
 
 session_start();
+header('Content-Type: text/html; charset=UTF-8');
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET, OPTIONS");
+date_default_timezone_set('America/Mexico_City');
 
 require_once 'autoloadController.php';
 require_once 'config/db.php';
 require_once 'config/parameters.php';
 require_once 'helpers/utils.php';
+
+if (isset($_POST['tabName'])) {
+    $nameController = 'alumnoController';
+    $controlador = new $nameController();
+    $action = 'updateGeneral';
+    $controlador->$action();
+    exit();
+}
+
 require_once 'views/layout/header.php';
 
 if (isset($_GET['controller'])) {

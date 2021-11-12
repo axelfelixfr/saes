@@ -44,4 +44,22 @@ class Utils
             return true;
         }
     }
+
+    public static function saludar()
+    {
+        
+        date_default_timezone_set('America/Mexico_City');
+        
+        $temprano = 11;
+        $tarde = 19;
+
+        $hora_actual = intval(date("H"));
+        if ($hora_actual <= $temprano) {
+            echo "Buenos días";
+        } elseif ($hora_actual > $temprano && $hora_actual <= $tarde) {
+            echo "Buenas tardes";
+        } else {
+            echo "Buenas noches";
+        }
+    }
 }

@@ -17,9 +17,9 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-4">
+    <div class="col-12 col-md-4 d-none d-md-flex">
         <div class="card align-items-center border-0" style="width: 18rem;">
-            <img src="https://s2.qwant.com/thumbr/0x380/e/2/1dcae51df64ecca2a6a8eafd5fd420fcc23d09d4473b89678965fafa2bbfe1/user-icon-vector.jpg?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F551%2F599%2Foriginal%2Fuser-icon-vector.jpg&q=0&b=1&p=0&a=0" class="card-img-top" alt="foto">
+            <img class="img-fluid" src="https://s2.qwant.com/thumbr/0x380/e/2/1dcae51df64ecca2a6a8eafd5fd420fcc23d09d4473b89678965fafa2bbfe1/user-icon-vector.jpg?u=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F551%2F599%2Foriginal%2Fuser-icon-vector.jpg&q=0&b=1&p=0&a=0" class="card-img-top" alt="foto">
             <div class="card-body">
                 <br><br>
                 <a href="#" class="btn btn-primary">Imprimir Datos</a>
@@ -27,54 +27,98 @@
             </div>
         </div>
     </div>
-    <div class="col-8">
+    <div class="col-12 col-md-8">
         <ul class="nav nav-tabs" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="generales-tab" data-bs-toggle="tab" data-bs-target="#generales" type="button" role="tab" aria-controls="generales" aria-selected="true">Generales</button>
+                <button class="nav-link active px-1 px-md-2" id="generales-tab" data-bs-toggle="tab" data-bs-target="#generales" type="button" role="tab" aria-controls="generales" aria-selected="true">Generales</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="nacimiento-tab" data-bs-toggle="tab" data-bs-target="#nacimiento" type="button" role="tab" aria-controls="nacimiento" aria-selected="false">Nacimiento</button>
+                <button class="nav-link px-1 px-md-2" id="nacimiento-tab" data-bs-toggle="tab" data-bs-target="#nacimiento" type="button" role="tab" aria-controls="nacimiento" aria-selected="false">Nacimiento</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="direccion-tab" data-bs-toggle="tab" data-bs-target="#direccion" type="button" role="tab" aria-controls="direccion" aria-selected="false">Dirección</button>
+                <button class="nav-link px-1 px-md-2" id="direccion-tab" data-bs-toggle="tab" data-bs-target="#direccion" type="button" role="tab" aria-controls="direccion" aria-selected="false">Dirección</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="escolaridad-tab" data-bs-toggle="tab" data-bs-target="#escolaridad" type="button" role="tab" aria-controls="escolaridad" aria-selected="false">Escolaridad</button>
+                <button class="nav-link px-1 px-md-2" id="escolaridad-tab" data-bs-toggle="tab" data-bs-target="#escolaridad" type="button" role="tab" aria-controls="escolaridad" aria-selected="false">Escolaridad</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tutor-tab" data-bs-toggle="tab" data-bs-target="#tutor" type="button" role="tab" aria-controls="tutor" aria-selected="false">Padre/Tutor</button>
+                <button class="nav-link px-1 px-md-2" id="tutor-tab" data-bs-toggle="tab" data-bs-target="#tutor" type="button" role="tab" aria-controls="tutor" aria-selected="false">Tutor</button>
             </li>
         </ul>
-        <div class="tab-content p-4 border border-1" style="height: auto;" id="myTabContent">
+        <div class="tab-content p-4 border border-1" style="height: auto;" id="tabGeneral">
             <div class="tab-pane fade show active" id="generales" role="tabpanel" aria-labelledby="generales-tab">
-                <div class="row" style="text-indent: 30px;">
+                <form class="row ms-0 ms-md-4" method="POST">
                     <div class="col-6 col-sm-3 fw-bold">BOLETA:</div>
-                    <div class="col fw-normal">2019650326</div>
+                    <div class="col fw-normal">
+                        <?= $_SESSION['identity']->clave_usuario ?>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">NOMBRE:</div>
-                    <div class="col fw-normal">VENEGAS FLORES DENI FEY</div>
+                    <div class="col fw-normal text-uppercase text-break">
+                        <?= $_SESSION['identity']->nombre ?>
+                        <?= $_SESSION['identity']->apellidos ?>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">PLANTEL:</div>
-                    <div class="col fw-normal">UPIICSA</div>
+                    <div class="col fw-normal">
+                        <?= $_SESSION['identity']->plantel ?>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">CURP:</div>
-                    <div class="col fw-normal">VEFD990205MMCNLN01</div>
+                    <div class="col fw-normal text-break">
+                        <?= $_SESSION['identity']->curp ?>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">RFC:</div>
-                    <div class="col fw-normal">VEFD990205</div>
+                    <div class="col fw-normal">
+                        <?= $_SESSION['identity']->rfc ?>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">CARTILLA:</div>
-                    <div class="col fw-normal"></div>
+                    <div class="col">
+                        <input id="cartilla" name="cartilla" type="text" value="<?= $alumno->cartilla ?>" class="form-control form-control-sm d-none">
+                        <div id="cartillaDisplay" class="d-block">
+                            <?= $_SESSION['identity']->cartilla ?>
+                        </div>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">PASAPORTE:</div>
-                    <div class="col fw-normal"></div>
+                    <div class="col fw-normal">
+                        <input id="pasaporte" name="pasaporte" type="text" value="<?= $alumno->pasaporte ?>" class="form-control form-control-sm mt-2 d-none">
+                        <div id="pasaporteDisplay" class="d-block">
+                            <?= $_SESSION['identity']->pasaporte ?>
+                        </div>
+                    </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-sm-3 fw-bold">SEXO:</div>
-                    <div class="col fw-normal">MUJER</div>
-                </div>
-                <div class="text-sm-center p-4 ">
-                    <a href="#" class="btn btn-primary">Modificar</a>
-                </div>
+                    <div class="col fw-normal">
+                        <select id="sexo" class="form-select form-select-sm mt-2 d-none" required>
+                            <option selected disabled>Selecciona un sexo</option>
+                            <?php if ($alumno->sexo == 'H') : ?>
+                            <option value="<?= $alumno->sexo ?>" selected>
+                                Hombre
+                            </option>
+                            <option value="M">
+                                Mujer
+                            </option>
+                            <?php else : ?>
+                            <option value="<?= $alumno->sexo ?>" selected>
+                                Mujer
+                            </option>
+                            <option value="H">
+                                Hombre
+                            </option>
+                            <?php endif; ?>
+                        </select>
+                        <div id="sexoDisplay" class="d-block">
+                            <?= $_SESSION['identity']->sexo == 'H' ? 'Hombre' : 'Mujer' ?>
+                        </div>
+                    </div>
+                    <div class="text-sm-center p-4">
+                        <button class="btn btn-primary" id="modificarGeneral" type="button">Modificar</button>
+                        <button class="btn btn-warning d-none" id="formGeneral" type="button">Guardar</button>
+                    </div>
+                </form>
             </div>
             <div class="tab-pane fade" id="nacimiento" role="tabpanel" aria-labelledby="nacimiento-tab">
                 <div class="col-12 col-lg-9 mx-auto">

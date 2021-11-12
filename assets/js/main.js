@@ -1,5 +1,4 @@
 $(document).ready(() => {
-
     /*Inicio de sesión*/
     ('use strict');
     var forms = document.querySelectorAll('.needs-validation');
@@ -19,10 +18,8 @@ $(document).ready(() => {
     /*Fin de inicio de sesión*/
 });
 
-// 
-// Scripts
-// 
 
+// Toggle para sidebar
 window.addEventListener('DOMContentLoaded', event => {
 
     // Toggle the side navigation

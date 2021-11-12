@@ -10,7 +10,9 @@
     <div class="col-6 text-end">
         <h1 class="mb-5">Menú principal de alumnos</h1>
         <h2 class="text-warning">
-            <p class="mb-0">Buenos días</p>
+            <p class="mb-0">
+                <?= Utils::saludar() ?>
+            </p>
             <span class="text-success">
                 <?= $_SESSION['identity']->nombre ?>
                 <?= $_SESSION['identity']->apellidos ?>

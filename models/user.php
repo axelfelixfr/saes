@@ -2,7 +2,7 @@
 
 class User
 {
-
+    private $id;
     private $email;
     private $password;
     // Conexión a base de datos
@@ -13,24 +13,29 @@ class User
         $this->db = Database::connect();
     }
 
-    public function getEmail()
+    function getId()
+    {
+        return $this->$id;
+    }
+
+    function getEmail()
     {
         return $this->$email;
     }
 
-    public function setEmail($email)
+    function setEmail($email)
     {
         $this->email = $email;
         return $this;
     }
 
 
-    public function getPassword()
+    function getPassword()
     {
         return $this->$password;
     }
 
-    public function setPassword($password)
+    function setPassword($password)
     {
         $this->password = $password;
         return $this;

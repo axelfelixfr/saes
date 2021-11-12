@@ -2,3 +2,4 @@ prepros.config
 assets/bootstrap/*
 assets/css/main.css
 assets/css/all.min.css
+assets/css/sweetalert2.min.css

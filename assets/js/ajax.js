@@ -43,7 +43,11 @@ $(document).ready(() => {
                 console.log(data);
                 var jsonData = JSON.parse(data);
                 console.log(jsonData);
-                alert('Success');
+                Swal.fire({
+                    icon: 'success',
+                    text: 'Se han actualizado tus datos exitosamente',
+                    showCloseButton: true
+                });
 
                 $('#cartilla').val(jsonData.cartilla);
                 $('#cartillaDisplay').html(jsonData.cartilla);
@@ -54,7 +58,9 @@ $(document).ready(() => {
                 $('#sexo').val(jsonData.sexo);
                 let sexoDisp = jsonData.sexo == 'H' ? 'Hombre' : 'Mujer';
                 $('#sexoDisplay').html(sexoDisp);
-                toggleGeneral();
+
+
+                setTimeout(toggleGeneral, 1000);
             }
         });
     });

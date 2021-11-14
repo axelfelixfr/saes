@@ -1,20 +1,20 @@
 $(document).ready(() => {
     /*Inicio de sesión*/
-    ('use strict');
-    var forms = document.querySelectorAll('.needs-validation');
-    Array.prototype.slice.call(forms).forEach(function(form) {
-        form.addEventListener(
-            'submit',
-            function(event) {
-                if (!form.checkValidity()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            },
-            false
-        );
-    });
+    // ('use strict');
+    // var forms = document.querySelectorAll('.needs-validation');
+    // Array.prototype.slice.call(forms).forEach(function(form) {
+    //     form.addEventListener(
+    //         'submit',
+    //         function(event) {
+    //             if (!form.checkValidity()) {
+    //                 event.preventDefault();
+    //                 event.stopPropagation();
+    //             }
+    //             form.classList.add('was-validated');
+    //         },
+    //         false
+    //     );
+    // });
     /*Fin de inicio de sesión*/
 });
 
@@ -37,3 +37,37 @@ window.addEventListener('DOMContentLoaded', event => {
     }
 
 });
+
+// Toast configuration
+toastr.options = {
+    "closeButton": true,
+    "debug": false,
+    "newestOnTop": true,
+    "progressBar": true,
+    "positionClass": "toast-bottom-right",
+    "preventDuplicates": true,
+    "onclick": null,
+    "showDuration": "300",
+    "hideDuration": "1000",
+    "timeOut": "5000",
+    "extendedTimeOut": "1000",
+    "showEasing": "swing",
+    "hideEasing": "swing",
+    "showMethod": "fadeIn",
+    "hideMethod": "fadeOut"
+}
+
+// Validate Email
+function validateEmail(email) {
+    let validationEmail = /\b[\w\.-]+@(alumno.ipn.mx|profesor.ipn.mx)$\b/;
+    return validationEmail.test(String(email).toLowerCase());
+}
+
+const locationLogin = 'http://localhost/saes/';
+
+if (locationLogin == location.href) {
+    // Validaciones Bootstrap
+    bootstrapValidate('#email', 'email:Debe ser un email');
+
+    bootstrapValidate('#password', 'min:5:Mínimo deben ser 5 carácteres!');
+}

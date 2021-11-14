@@ -29,22 +29,31 @@ class userController
             $user->setPassword($_POST['password']);
             
             $identity = $user->login();
-            
+            // $_SESSION['nueva'] = $identity;
+// header("Location:".base_url);
+// die();
             // Crear una sesión
             if ($identity && is_object($identity)) {
                 // Se guarda al usuario en identity
                 $_SESSION['identity'] = $identity;
+
+                // Se pasa a false al pasar el login
+                if (isset($_SESSION['error_login']) && $_SESSION['error_login']) {
+                    $_SESSION['error_login'] = false;
+                }
+
                 // Se identifica si es profesor o alumno
-                if ($identity->perfil_name == 'profesor') {
+                if ($identity->general->perfil_name == 'profesor') {
                     $_SESSION['profesor'] = true;
                     header("Location:".base_url.'profesor/main');
-                } elseif ($identity->perfil_name == 'alumno') {
+                } elseif ($identity->general->perfil_name == 'alumno') {
                     $_SESSION['alumno'] = true;
                     header("Location:".base_url.'alumno/main');
                 }
+
                 // Algo fallo en el login
             } else {
-                $_SESSION['error_login'] = 'Login fallo';
+                $_SESSION['error_login'] = true;
                 header("Location:".base_url);
             }
         } else {
@@ -64,6 +73,10 @@ class userController
 
         if (isset($_SESSION['alumno'])) {
             unset($_SESSION['alumno']);
+        }
+
+        if (isset($_SESSION['error_login'])) {
+            unset($_SESSION['error_login']);
         }
         
         header("Location:".base_url);

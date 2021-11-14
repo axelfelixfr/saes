@@ -125,7 +125,7 @@
             <div class="sb-sidenav-footer">
                 <a href="<?=base_url?>user/logout" class="text-white text-decoration-none nav-ipn-item">Cerrar sesión</a>
                 <div class="small">
-                    <?= $_SESSION['identity']->clave_usuario ?>
+                    <?= $_SESSION['identity']->general->clave_usuario ?>
                 </div>
             </div>
         </nav>

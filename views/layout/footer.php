@@ -14,11 +14,26 @@
 </div> -->
     </div>
 </footer>
-<script src="<?=base_url?>assets/js/jquery-3.6.0.min.js"></script>
-<script src="<?=base_url?>assets/js/bootstrap.bundle.min.js"></script>
-<script src="<?=base_url?>assets/js/sweetalert2.all.min.js"></script>
-<script src="<?=base_url?>assets/js/main.js"></script>
-<script src="<?=base_url?>assets/js/ajax.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/sweetalert2.all.min.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/ajax.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/validator.min.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/toastr.min.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/bootstrap-validate.js"></script>
+<script type="text/javascript" src="<?=base_url?>assets/js/main.js"></script>
+<script type="text/javascript">
+$(document).ready(() => {
+    const displayToast = $('div[data-function="handleShowToast"]');
+    if (displayToast.length != 0) {
+        let showToast = displayToast[0].dataset.boolean;
+        if (showToast) {
+            toastr.error(displayToast[0].outerText, 'Error');
+            $('#errorLogin').attr("data-boolean", false);
+        }
+    }
+});
+</script>
 </body>
 
 </html>

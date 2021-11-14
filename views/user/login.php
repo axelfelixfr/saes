@@ -63,7 +63,7 @@
         </div>
     </div>
     <!-- Fin de carousel -->
-    <div class="container pt-4 pb-5">
+    <div class="container pt-4 pb-5" id="saesBienvenida">
         <h1 class="text-center">SAES.- Es la herramienta informática diseñada para apoyar en la consulta y
             realización
             de trámites escolares.</h1>
@@ -75,35 +75,40 @@
                         continuar</span></h2>
                 <?php else : ?>
                 <h2 class="text-warning text-center">Te damos la bienvenida <span class="text-success">
-                        <?= $_SESSION['identity']->nombre ?>
-                        <?= $_SESSION['identity']->apellidos ?></span></h2>
+                        <?= $_SESSION['identity']->general->nombre ?>
+                        <?= $_SESSION['identity']->general->apellidos ?></span></h2>
                 <?php endif; ?>
                 <!-- <a href="<?=base_url?>user/logout">Cerrar sesión</a> -->
             </div>
+            <!-- <?= var_dump($_SESSION['nueva']) ?> -->
+            <!-- <?= var_dump($_SESSION['alumno']) ?> -->
             <!-- Inicio del Login-->
             <?php if (!isset($_SESSION['identity'])) :?>
+                <?php if (isset($_SESSION['error_login']) && $_SESSION['error_login']) : ?>
+            <div id="errorLogin" data-function="handleShowToast" data-boolean="true" class="d-none">Datos incorrectos</div>
+                <?php endif; ?>
             <div class="col-12 col-md-4">
                 <div class="card m-3">
                     <div class="card-body">
                         <!-- Formulario-->
-                        <form action="<?=base_url?>user/login" method="POST" class="needs-validation" novalidate id="formulario">
+                        <form method="POST" id="formLogin">
                             <div class="mb-3">
-                                <div class="text-center">
-                                    <!-- Correo Electronico -->
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Correo Electrónico</label>
-                                        <input type="email" class="form-control" name="email" id="email" placeholder="Tu correo" required pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$">
-                                    </div>
-                                    <!-- FIN Correo Electronico -->
-                                    <!-- Contraseña -->
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Contraseña</label>
-                                        <input type="password" class="form-control" name="password" id="password" placeholder="Tu contraseña" required pattern="^.{4,12}$">
-                                    </div>
-                                    <!-- FIN Contraseña -->
-                                    <div class="col-12">
-                                        <button class="btn btn-primary" type="submit">Entrar</button>
-                                    </div>
+                                <!-- <?= var_dump($_SESSION['error_login']) ?> -->
+                                <!-- Correo Electronico -->
+                                <!-- FALTA AGREGAR ICONOS A INPUTS -->
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Correo Electrónico</label>
+                                    <input type="email" class="form-control" name="email" id="email" placeholder="Tu correo" required>
+                                </div>
+                                <!-- FIN Correo Electronico -->
+                                <!-- Contraseña -->
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Contraseña</label>
+                                    <input type="password" class="form-control" name="password" id="password" placeholder="Tu contraseña" required>
+                                </div>
+                                <!-- FIN Contraseña -->
+                                <div class="col-12 text-center">
+                                    <input type="submit" id="submitLogin" class="btn btn-primary" value="Entrar">
                                 </div>
                             </div>
                         </form>

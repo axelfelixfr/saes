@@ -13,12 +13,26 @@ require_once 'config/db.php';
 require_once 'config/parameters.php';
 require_once 'helpers/utils.php';
 
-if (isset($_POST['tabName'])) {
-    $nameController = 'alumnoController';
-    $controlador = new $nameController();
-    $action = 'updateGeneral';
-    $controlador->$action();
-    exit();
+if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['tabName']) && !empty($_POST['tabName'])) {
+    $typeUser = $_POST['user'];
+    $tabName = $_POST['tabName'];
+
+    if ($typeUser == "alumno") {
+        $nameController = 'alumnoAjax';
+                $controlador = new $nameController();
+        switch ($tabName) {
+            case 'tabAlumnoGeneral':
+                $action = 'updateGeneral';
+                $controlador->$action();
+                exit();
+            break;
+            case 'tabAlumnoNacimiento':
+                $action = 'updateNacimiento';
+                $controlador->$action();
+                exit();
+            break;
+        }
+    }
 }
 
 require_once 'views/layout/header.php';

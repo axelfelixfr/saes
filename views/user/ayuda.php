@@ -1,4 +1,7 @@
 <div class="container">
+    <?php if (isset($_SESSION['error_login'])) : ?>
+        <?php $_SESSION['error_login'] = false; ?>
+    <?php endif; ?>
     <nav aria-label="breadcrumb" class="py-2">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= base_url ?>">Inicio</a></li>
@@ -32,10 +35,10 @@
     <br>
     <div class="pb-3">
         <div class="fw-bold">BOLETA: <span class="fw-normal">
-                <?= $_SESSION['identity']->clave_usuario ?></span></div>
+                <?= $_SESSION['identity']->general->clave_usuario ?></span></div>
         <div class="fw-bold">NOMBRE: <span class="fw-normal text-uppercase">
-                <?= $_SESSION['identity']->nombre ?>
-                <?= $_SESSION['identity']->apellidos ?></span></div>
+                <?= $_SESSION['identity']->general->nombre ?>
+                <?= $_SESSION['identity']->general->apellidos ?></span></div>
         <br />
         <div class="col-md-4 offset-md-4">
             <table class="table table-bordered text-center">
@@ -69,10 +72,10 @@
     <br>
     <div class="pb-3">
         <div class="fw-bold">RFC: <span class="fw-normal">
-                <?= $_SESSION['identity']->clave_usuario ?></span></div>
+                <?= $_SESSION['identity']->general->clave_usuario ?></span></div>
         <div class="fw-bold">NOMBRE: <span class="fw-normal text-uppercase">
-                <?= $_SESSION['identity']->nombre ?>
-                <?= $_SESSION['identity']->apellidos ?></span></div>
+                <?= $_SESSION['identity']->general->nombre ?>
+                <?= $_SESSION['identity']->general->apellidos ?></span></div>
         <br />
         <div class="col-md-4 offset-md-4">
             <table class="table table-bordered text-center">

@@ -72,6 +72,7 @@ $nuevoTeal:#00897B;
     font-weight: 400;
     font-display: swap;
 }
+
 // Sweet Alert 2
 @import url('../css/sweetalert2.min.css');
 
@@ -137,7 +138,8 @@ $input-focus-box-shadow: none;
 $input-padding-y: 0.3rem;
 $input-padding-x: 0.8rem;
 $input-border-radius: 0.4rem;
-
+$form-check-input-focus-box-shadow:none;
+$form-select-focus-box-shadow: none;
 // Importamos Bootstrap
 @import "../bootstrap/bootstrap.scss";
 

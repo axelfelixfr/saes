@@ -1,4 +1,7 @@
 <div class="container">
+    <?php if (isset($_SESSION['error_login'])) : ?>
+        <?php $_SESSION['error_login'] = false; ?>
+    <?php endif; ?>
     <nav aria-label="breadcrumb" class="py-2">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="<?= base_url ?>">Inicio</a></li>

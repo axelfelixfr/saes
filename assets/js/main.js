@@ -63,6 +63,19 @@ function validateEmail(email) {
     return validationEmail.test(String(email).toLowerCase());
 }
 
+// Validate String
+function validateString(exampleString) {
+    let validationString =
+        /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/g;
+    return validationString.test(String(exampleString));
+}
+
+function validateChar(exampleString) {
+    let validationChar = /^[a-zA-Z0-9]*$/g;
+    return validationChar.test(String(exampleString));
+}
+
+
 const locationLogin = 'http://localhost/saes/';
 
 if (locationLogin == location.href) {
@@ -71,3 +84,6 @@ if (locationLogin == location.href) {
 
     bootstrapValidate('#password', 'min:5:Mínimo deben ser 5 carácteres!');
 }
+
+bootstrapValidate('#cartilla', 'regex:^[a-zA-Z0-9]*$:No use carácteres especiales ni espacios');
+bootstrapValidate('#pasaporte', 'regex:^[a-zA-Z0-9]*$:No use carácteres especiales ni espacios');

@@ -205,6 +205,18 @@ class Alumno
         return $usuario;
     }
 
+    public function getDireccionAlumno()
+    {
+        $sql = "SELECT * FROM direccion WHERE usuario_id = {$this->id};";
+        $direccionAlumno = $this->db->query($sql);
+
+        if ($direccionAlumno && $direccionAlumno->num_rows == 1) {
+            $direccion = $direccionAlumno->fetch_object();
+        }
+
+        return $direccion;
+    }
+
     public function editGeneral()
     {
         $sql = "UPDATE usuario SET cartilla ='{$this->getCartilla()}', pasaporte='{$this->getPasaporte()}', sexo='{$this->getSexo()}' WHERE id={$this->id};";
@@ -230,6 +242,20 @@ class Alumno
         }
         return $result;
     }
-    
-    // FALTA AGREGAR EDITAR DIRECCION
+
+    public function editDireccion()
+    {
+        $sql = "UPDATE direccion SET calle ='{$this->getCalle()}', num_ext ={$this->getNumExt()}, num_int ={$this->getNumInt()}, colonia ='{$this->getColonia()}', codigo_postal ={$this->getCodigoPostal()}, estado ='{$this->getEstado()}', municipio ='{$this->getMunicipio()}', movil ={$this->getMovil()}, email ='{$this->getEmailGeneral()}', tel_oficina ={$this->getTelOficina()}, labora ='{$this->getLabora()}' WHERE id={$this->id};";
+
+        $save = $this->db->query($sql);
+        // echo $this->db->error;
+        // die();
+        $result = false;
+        
+        if ($save) {
+            $result = true;
+        }
+
+        return $result;
+    }
 }

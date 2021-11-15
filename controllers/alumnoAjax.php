@@ -111,10 +111,11 @@ class alumnoAjax
                     $alumno->setId($id);
                     
                     $consultUpdate = $alumno->editDireccion();
-                    $nuevoAlumno = $alumno->getAlumno();
 
-                    $_SESSION['identity']->general = $nuevoAlumno;
-                    
+                    // var_dump($consultUpdate);
+                    // AQUÍ SE DEBE CAMBIAR POR UN MÉTODO QUE OBTENGA LA DIRECCION, TUTOR Y GENERAL (DIFERENTES TABLAS)
+                    $nuevoAlumno = $alumno->getDireccionAlumno();
+                    $_SESSION['identity']->direccion = $nuevoAlumno;
                     $alumnoJson = json_encode($nuevoAlumno, JSON_UNESCAPED_UNICODE);
                     echo $alumnoJson;
                 }

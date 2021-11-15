@@ -19,7 +19,7 @@ if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['tabName']) 
 
     if ($typeUser == "alumno") {
         $nameController = 'alumnoAjax';
-                $controlador = new $nameController();
+        $controlador = new $nameController();
         switch ($tabName) {
             case 'tabAlumnoGeneral':
                 $action = 'updateGeneral';
@@ -31,6 +31,12 @@ if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['tabName']) 
                 $controlador->$action();
                 exit();
             break;
+            case 'tabAlumnoDireccion':
+                $action = 'updateDireccion';
+                $controlador->$action();
+                exit();
+            default:
+                exit();
         }
     }
 }

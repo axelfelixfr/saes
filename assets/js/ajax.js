@@ -69,50 +69,87 @@ $(document).ready(() => {
         toggleGeneral();
     });
 
-    $("#generales").on("click", "#formGeneral", () => {
+    $("#generales").on("click", "#formGeneral", (e) => {
+        e.preventDefault();
         console.log('Si paso');
 
-        $.ajax({
-            url: 'index.php',
-            type: 'POST',
-            dataType: "text",
-            cache: false,
-            data: { user: "alumno", tabName: "tabAlumnoGeneral", cartilla: $("#cartilla").val(), pasaporte: $("#pasaporte").val(), sexo: $("#sexo").val() },
-            success: function(data) {
-                console.log(cartilla);
-                console.log(pasaporte);
-                console.log(sexo);
-                console.log(data);
-                var jsonData = JSON.parse(data);
-                console.log(jsonData);
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Se han actualizado tus datos exitosamente',
-                    showCloseButton: true
-                });
+        formIsCorrect = true;
 
-                $('#cartilla').val(jsonData.cartilla);
-                $('#cartillaDisplay').html(jsonData.cartilla);
+        // Variables para validación
+        let valCartilla = $("#cartilla").val();
+        let valPasaporte = $("#pasaporte").val();
 
-                $('#pasaporte').val(jsonData.pasaporte);
-                $('#pasaporteDisplay').html(jsonData.pasaporte);
+        let validationCharCartilla = validateChar(valCartilla);
+        let validationCharPasaporte = validateChar(valPasaporte);
 
-                $('#sexo').val(jsonData.sexo);
-                let sexoDisp = jsonData.sexo == 'H' ? 'Hombre' : 'Mujer';
-                $('#sexoDisplay').html(sexoDisp);
+        if (!validationCharCartilla || !validationCharPasaporte) {
+            toastr.error('No usar carácteres especiales ni espacios', 'Campos incorrectos');
+            formIsCorrect = false;
+            console.log(formIsCorrect);
+        }
 
+        let emptyCartilla = validator.isEmpty(valCartilla);
+        let emptyPasaporte = validator.isEmpty(valPasaporte);
+        if (!emptyCartilla || !emptyPasaporte) {
+            let validationMinCartilla = validator.isLength(valCartilla, { min: 10, max: 30 });
+            let validationMinPasaporte = validator.isLength(valPasaporte, { min: 10, max: 30 });
 
-                setTimeout(toggleGeneral, 1000);
+            if (!validationMinCartilla || !validationMinPasaporte) {
+                toastr.error('Mínimo deben ser 10 carácteres y máximo 30', 'Campos incorrectos');
+                formIsCorrect = false;
             }
-        });
-    });
+        }
 
+        if (formIsCorrect) {
+            $.ajax({
+                url: 'index.php',
+                type: 'POST',
+                dataType: "text",
+                cache: false,
+                data: { user: "alumno", tabName: "tabAlumnoGeneral", cartilla: $("#cartilla").val(), pasaporte: $("#pasaporte").val(), sexo: $("#sexo").val() },
+                success: function(data) {
+                    if (data.length === 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Hubo un error al ingresar la información',
+                            showCloseButton: true
+                        });
+
+                        toggleGeneral();
+                    } else {
+                        console.log(data);
+                        var jsonData = JSON.parse(data);
+
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Se han actualizado tus datos exitosamente',
+                            showCloseButton: true
+                        });
+
+                        $('#cartilla').val(jsonData.cartilla);
+                        $('#cartillaDisplay').html(jsonData.cartilla);
+
+                        $('#pasaporte').val(jsonData.pasaporte);
+                        $('#pasaporteDisplay').html(jsonData.pasaporte);
+
+                        $('#sexo').val(jsonData.sexo);
+                        let sexoDisp = jsonData.sexo == 'H' ? 'Hombre' : 'Mujer';
+                        $('#sexoDisplay').html(sexoDisp);
+
+
+                        setTimeout(toggleGeneral, 1000);
+                    }
+
+                }
+            });
+        }
+    });
 
     // NACIMIENTO
     let valuebtnNacimiento = true;
 
     toggleNacimiento = () => {
-        // Input sexo
+        // Input nacimiento
         $('#fechaNacimiento, #nacimientoDisplay, #formNacimiento').toggleClass("d-none");
 
         valuebtnNacimiento ? $('#modificarNacimiento').html("Cancelar") : $('#modificarNacimiento').html("Modificar");
@@ -125,31 +162,64 @@ $(document).ready(() => {
         toggleNacimiento();
     });
 
-    $("#nacimiento").on("click", "#formNacimiento", () => {
+    $("#nacimiento").on("click", "#formNacimiento", (e) => {
+        e.preventDefault();
         console.log('Si paso');
 
-        $.ajax({
-            url: 'index.php',
-            type: 'POST',
-            dataType: "text",
-            cache: false,
-            data: { user: "alumno", tabName: "tabAlumnoNacimiento", nacimiento: $("#fechaNacimiento").val() },
-            success: function(data) {
-                var jsonData = JSON.parse(data);
+        formIsCorrect = true;
 
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Se han actualizado tus datos exitosamente',
-                    showCloseButton: true
-                });
+        // Variables para validación
+        let valNacimiento = $("#fechaNacimiento").val();
 
-                $('#fechaNacimiento').val(jsonData.nacimiento);
-                $('#nacimientoDisplay').html(jsonData.nacimiento);
+        let emptyNacimiento = validator.isEmpty(valNacimiento);
 
+        if (emptyNacimiento) {
+            toastr.error('Rellene el formulario', 'Campo incompleto');
+            formIsCorrect = false;
+            console.log(formIsCorrect);
+        } else {
+            let validationDate = validator.isDate(valNacimiento);
 
-                setTimeout(toggleNacimiento, 1000);
+            if (!validationDate) {
+                toastr.error('Debes ingresar una fecha', 'Campo incorrecto');
+                formIsCorrect = false;
             }
-        });
+        }
+
+        if (formIsCorrect) {
+            $.ajax({
+                url: 'index.php',
+                type: 'POST',
+                dataType: "text",
+                cache: false,
+                data: { user: "alumno", tabName: "tabAlumnoNacimiento", nacimiento: $("#fechaNacimiento").val() },
+                success: function(data) {
+                    if (data.length === 0) {
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Hubo un error al ingresar la información',
+                            showCloseButton: true
+                        });
+
+                        toggleNacimiento();
+                    } else {
+                        var jsonData = JSON.parse(data);
+
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Se han actualizado tus datos exitosamente',
+                            showCloseButton: true
+                        });
+
+                        $('#fechaNacimiento').val(jsonData.nacimiento);
+                        $('#nacimientoDisplay').html(jsonData.nacimiento);
+
+
+                        setTimeout(toggleNacimiento, 1000);
+                    }
+                }
+            });
+        }
     });
 
     // DIRECCION
@@ -178,32 +248,64 @@ $(document).ready(() => {
             dataType: "text",
             cache: false,
             // FALTA AGREGAR DATA PARA AJAX
-            data: { user: "alumno", tabName: "tabAlumnoGeneral", cartilla: $("#cartilla").val(), pasaporte: $("#pasaporte").val(), sexo: $("#sexo").val() },
+            data: { user: "alumno", tabName: "tabAlumnoDireccion", calle: $("#calle").val(), numExt: $("#numExt").val(), numInt: $("#numInt").val(), colonia: $("#colonia").val(), codigoPostal: $("#codigoPostal").val(), estado: $("#estado").val(), municipio: $("#municipio").val(), movil: $("#movil").val(), emailGeneral: $("#emailGeneral").val(), telOficina: $("#telOficina").val(), labora: $("#labora").val() },
             success: function(data) {
-                console.log(cartilla);
-                console.log(pasaporte);
-                console.log(sexo);
-                console.log(data);
-                var jsonData = JSON.parse(data);
-                console.log(jsonData);
-                Swal.fire({
-                    icon: 'success',
-                    text: 'Se han actualizado tus datos exitosamente',
-                    showCloseButton: true
-                });
 
-                $('#cartilla').val(jsonData.cartilla);
-                $('#cartillaDisplay').html(jsonData.cartilla);
+                if (data.length === 0) {
+                    Swal.fire({
+                        icon: 'error',
+                        text: 'Hubo un error al ingresar la información',
+                        showCloseButton: true
+                    });
 
-                $('#pasaporte').val(jsonData.pasaporte);
-                $('#pasaporteDisplay').html(jsonData.pasaporte);
+                    toggleDireccion();
+                } else {
+                    console.log(data);
+                    var jsonData = JSON.parse(data);
+                    console.log(jsonData);
+                    Swal.fire({
+                        icon: 'success',
+                        text: 'Se han actualizado tus datos exitosamente',
+                        showCloseButton: true
+                    });
 
-                $('#sexo').val(jsonData.sexo);
-                let sexoDisp = jsonData.sexo == 'H' ? 'Hombre' : 'Mujer';
-                $('#sexoDisplay').html(sexoDisp);
+                    // CAMBIAR LOS ID DE LOS INPUTS COMO 'numExt' a 'num_ext'
+                    $('#calle').val(jsonData.calle);
+                    $('#calleDisplay').html(jsonData.calle);
 
+                    $('#numExt').val(jsonData.num_ext);
+                    $('#numExtDisplay').html(jsonData.num_ext);
 
-                setTimeout(toggleDireccion, 1000);
+                    $('#numInt').val(jsonData.num_int);
+                    $('#numIntDisplay').html(jsonData.num_int);
+
+                    $('#colonia').val(jsonData.colonia);
+                    $('#coloniaDisplay').html(jsonData.colonia);
+
+                    $('#codigoPostal').val(jsonData.codigo_postal);
+                    $('#codigoPostalDisplay').html(jsonData.codigo_postal);
+
+                    $('#estado').val(jsonData.estado);
+                    $('#estadoDisplay').html(jsonData.estado);
+
+                    $('#municipio').val(jsonData.municipio);
+                    $('#municipioDisplay').html(jsonData.municipio);
+
+                    $('#movil').val(jsonData.movil);
+                    $('#movilDisplay').html(jsonData.movil);
+
+                    $('#emailGeneral').val(jsonData.email);
+                    $('#emailDisplay').html(jsonData.email);
+
+                    $('#telOficina').val(jsonData.tel_oficina);
+                    $('#telOficinaDisplay').html(jsonData.tel_oficina);
+
+                    $('#labora').val(jsonData.labora);
+                    $('#laboraDisplay').html(jsonData.labora);
+
+                    setTimeout(toggleDireccion, 1000);
+                }
+
             }
         });
     });

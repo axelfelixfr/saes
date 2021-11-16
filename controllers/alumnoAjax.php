@@ -124,4 +124,49 @@ class alumnoAjax
             echo 'Aquí hubo un error';
         }
     }
+
+
+    public function updateTutor()
+    {
+        if (isset($_POST['tabName'])) {
+            if (isset($_POST['nombreTutor']) && !empty($_POST['nombreTutor'])) {
+                $nombreTutor = isset($_POST['nombreTutor']) ? $_POST['nombreTutor'] : false;
+                $rfcTutor = isset($_POST['rfcTutor']) ? $_POST['rfcTutor'] : false;
+                $padre = isset($_POST['padre']) ? $_POST['padre'] : false;
+                $madre = isset($_POST['madre']) ? $_POST['madre'] : false;
+
+                if ($nombreTutor) {
+                    $alumno = new Alumno();
+                    $alumno->setNombreTutor($nombreTutor);
+                    
+                    if ($rfcTutor) {
+                        $alumno->setRfcTutor($rfcTutor);
+                    }
+                    
+                    if ($padre) {
+                        $alumno->setPadre($padre);
+                    }
+                    
+                    if ($madre) {
+                        $alumno->setMadre($madre);
+                    }
+                    
+                    $id = $_SESSION['identity']->general->id;
+
+                    $alumno->setId($id);
+
+                    $consultUpdate = $alumno->editTutor();
+                    
+                    $nuevoAlumno = $alumno->getTutor();
+
+                    $_SESSION['identity']->tutor = $nuevoAlumno;
+                    
+                    $alumnoJson = json_encode($nuevoAlumno, JSON_UNESCAPED_UNICODE);
+                    echo $alumnoJson;
+                }
+            }
+        } else {
+            echo 'Aquí hubo un error';
+        }
+    }
 }

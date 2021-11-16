@@ -35,6 +35,10 @@ if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['tabName']) 
                 $action = 'updateDireccion';
                 $controlador->$action();
                 exit();
+            case 'tabAlumnoTutor':
+                $action = 'updateTutor';
+                $controlador->$action();
+                exit();
             default:
                 exit();
         }

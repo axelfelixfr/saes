@@ -166,7 +166,7 @@
                     <div class="w-100"></div>
                     <div class="col-6 col-md-4 fw-bold">NO. EXT.:</div>
                     <div class="col fw-normal">
-                        <input id="numExt" name="numExt" type="number" class="form-control form-control-sm d-none mt-2" value="<?= $alumno->direccion->num_ext ?>">
+                        <input id="numExt" name="numExt" type="text" class="form-control form-control-sm d-none mt-2" value="<?= $alumno->direccion->num_ext ?>">
                         <div id="numExtDisplay" class="d-block">
                             <?= $alumno->direccion->num_ext ?>
                         </div>
@@ -174,7 +174,7 @@
                     <div class="w-100"></div>
                     <div class="col-6 col-md-4 fw-bold">NO. INT.:</div>
                     <div class="col fw-normal">
-                        <input id="numInt" name="numInt" type="number" class="form-control form-control-sm d-none mt-2" value="<?= $alumno->direccion->num_int ?>">
+                        <input id="numInt" name="numInt" type="text" class="form-control form-control-sm d-none mt-2" value="<?= $alumno->direccion->num_int ?>">
                         <div id="numIntDisplay" class="d-block">
                             <?= $alumno->direccion->num_int ?>
                         </div>
@@ -238,7 +238,16 @@
                     <div class="w-100"></div>
                     <div class="col-6 col-md-4 fw-bold">LABORA:</div>
                     <div class="col fw-normal">
-                        <input id="labora" name="labora" type="text" class="form-control form-control-sm d-none mt-2" value="<?= $alumno->direccion->labora ?>">
+                        <select id="labora" name="labora" class="form-select form-select-sm mt-2 d-none" required>
+                            <option selected disabled>Selecciona una opción</option>
+                            <?php if ($alumno->direccion->labora == 'No') : ?>
+                            <option value="<?= $alumno->direccion->labora ?>" selected>No</option>
+                            <option value="Si">Si</option>
+                            <?php else : ?>
+                            <option value="<?= $alumno->direccion->labora ?>" selected>Si</option>
+                            <option value="No">No</option>
+                            <?php endif; ?>
+                        </select>
                         <div id="laboraDisplay" class="d-block">
                             <?= $alumno->direccion->labora ?>
                         </div>
@@ -273,30 +282,43 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="tutor" role="tabpanel" aria-labelledby="tutor-tab">
-                <div class="row ms-0 ms-md-4">
+                <form class="row ms-0 ms-md-4" method="POST">
                     <div class="col-6 col-md-5 fw-bold">NOMBRE DEL TUTOR:</div>
-                    <div class="col fw-normal text-uppercase">
-                        <?= $alumno->tutor->nombre ?>
+                    <div class="col fw-normal">
+                        <input id="nombreTutor" name="nombreTutor" type="text" value="<?= $alumno->tutor->nombre ?>" class="form-control form-control-sm d-none">
+                        <div id="nombreTutorDisplay" class="d-block text-uppercase">
+                            <?= $alumno->tutor->nombre ?>
+                        </div>
                     </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-md-5 fw-bold">RFC DEL TUTOR:</div>
-                    <div class="col fw-normal text-uppercase">
-                        <?= $alumno->tutor->rfc ?>
+                    <div class="col fw-normal">
+                        <input id="rfcTutor" name="rfcTutor" type="text" value="<?= $alumno->tutor->rfc ?>" class="form-control form-control-sm d-none mt-2">
+                        <div id="rfcDisplay" class="d-block text-uppercase">
+                            <?= $alumno->tutor->rfc ?>
+                        </div>
                     </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-md-5 fw-bold">NOMBRE DEL PADRE:</div>
-                    <div class="col fw-normal text-uppercase">
-                        <?= $alumno->tutor->padre ?>
+                    <div class="col fw-normal">
+                        <input id="padre" name="padre" type="text" value="<?= $alumno->tutor->padre ?>" class="form-control form-control-sm d-none mt-2">
+                        <div id="padreDisplay" class="d-block text-uppercase">
+                            <?= $alumno->tutor->padre ?>
+                        </div>
                     </div>
                     <div class="w-100"></div>
                     <div class="col-6 col-md-5 fw-bold">NOMBRE DE LA MADRE:</div>
-                    <div class="col fw-normal text-uppercase">
-                        <?= $alumno->tutor->madre ?>
+                    <div class="col fw-normal">
+                        <input id="madre" name="madre" type="text" value="<?= $alumno->tutor->madre ?>" class="form-control form-control-sm d-none mt-2">
+                        <div id="madreDisplay" class="d-block text-uppercase">
+                            <?= $alumno->tutor->madre ?>
+                        </div>
                     </div>
-                </div>
-                <div class="text-center p-4">
-                    <a href="#" class="btn btn-primary">Modificar</a>
-                </div>
+                    <div class="text-center p-4">
+                        <button class="btn btn-primary" id="modificarTutor" type="button">Modificar</button>
+                        <button class="btn btn-warning d-none" id="formTutor" type="button">Guardar</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

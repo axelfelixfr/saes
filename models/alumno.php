@@ -93,7 +93,7 @@ class Alumno
 
     function setNumExt($num_ext)
     {
-        $this->num_ext = $num_ext;
+        $this->num_ext = $this->db->real_escape_string($num_ext);
     }
 
     function getColonia()
@@ -103,7 +103,7 @@ class Alumno
 
     function setColonia($colonia)
     {
-        $this->colonia = $colonia;
+        $this->colonia = $this->db->real_escape_string($colonia);
     }
 
     function getCodigoPostal()
@@ -123,7 +123,7 @@ class Alumno
 
     function setEstado($estado)
     {
-        $this->estado = $estado;
+        $this->estado = $this->db->real_escape_string($estado);
     }
 
     function getMunicipio()
@@ -133,7 +133,7 @@ class Alumno
 
     function setMunicipio($municipio)
     {
-        $this->municipio = $municipio;
+        $this->municipio = $this->db->real_escape_string($municipio);
     }
 
     function getNumInt()
@@ -143,7 +143,7 @@ class Alumno
 
     function setNumInt($num_int)
     {
-        $this->num_int = $num_int;
+        $this->num_int = $this->db->real_escape_string($num_int);
     }
 
     function getMovil()
@@ -153,7 +153,7 @@ class Alumno
 
     function setMovil($movil)
     {
-        $this->movil = $movil;
+        $this->movil = $this->db->real_escape_string($movil);
     }
 
     function getEmailGeneral()
@@ -163,7 +163,7 @@ class Alumno
 
     function setEmailGeneral($email_general)
     {
-        $this->email_general = $email_general;
+        $this->email_general = $this->db->real_escape_string($email_general);
     }
 
     function getTelOficina()
@@ -173,7 +173,7 @@ class Alumno
 
     function setTelOficina($tel_oficina)
     {
-        $this->tel_oficina = $tel_oficina;
+        $this->tel_oficina = $this->db->real_escape_string($tel_oficina);
     }
 
     function getLabora()
@@ -183,7 +183,47 @@ class Alumno
 
     function setLabora($labora)
     {
-        $this->labora = $labora;
+        $this->labora = $this->db->real_escape_string($labora);
+    }
+
+    function getNombreTutor()
+    {
+        return $this->nombre_tutor;
+    }
+
+    function setNombreTutor($nombre_tutor)
+    {
+        $this->nombre_tutor = $this->db->real_escape_string($nombre_tutor);
+    }
+
+    function getRfcTutor()
+    {
+        return $this->rfc_tutor;
+    }
+
+    function setRfcTutor($rfc_tutor)
+    {
+        $this->rfc_tutor = $this->db->real_escape_string($rfc_tutor);
+    }
+
+    function getPadre()
+    {
+        return $this->padre;
+    }
+
+    function setPadre($padre)
+    {
+        $this->padre = $this->db->real_escape_string($padre);
+    }
+
+    function getMadre()
+    {
+        return $this->madre;
+    }
+
+    function setMadre($madre)
+    {
+        $this->madre = $this->db->real_escape_string($madre);
     }
 
 
@@ -217,6 +257,17 @@ class Alumno
         return $direccion;
     }
 
+    public function getTutor()
+    {
+        $sql = "SELECT * FROM tutor WHERE alumno_id = {$this->id};";
+        $tutorAlumno = $this->db->query($sql);
+
+        if ($tutorAlumno && $tutorAlumno->num_rows == 1) {
+            $tutor = $tutorAlumno->fetch_object();
+        }
+        return $tutor;
+    }
+
     public function editGeneral()
     {
         $sql = "UPDATE usuario SET cartilla ='{$this->getCartilla()}', pasaporte='{$this->getPasaporte()}', sexo='{$this->getSexo()}' WHERE id={$this->id};";
@@ -245,11 +296,26 @@ class Alumno
 
     public function editDireccion()
     {
-        $sql = "UPDATE direccion SET calle ='{$this->getCalle()}', num_ext ={$this->getNumExt()}, num_int ={$this->getNumInt()}, colonia ='{$this->getColonia()}', codigo_postal ={$this->getCodigoPostal()}, estado ='{$this->getEstado()}', municipio ='{$this->getMunicipio()}', movil ={$this->getMovil()}, email ='{$this->getEmailGeneral()}', tel_oficina ={$this->getTelOficina()}, labora ='{$this->getLabora()}' WHERE id={$this->id};";
+        $sql = "UPDATE direccion SET calle ='{$this->getCalle()}', num_ext ='{$this->getNumExt()}', num_int ='{$this->getNumInt()}', colonia ='{$this->getColonia()}', codigo_postal ={$this->getCodigoPostal()}, estado ='{$this->getEstado()}', municipio ='{$this->getMunicipio()}', movil ='{$this->getMovil()}', email ='{$this->getEmailGeneral()}', tel_oficina ='{$this->getTelOficina()}', labora ='{$this->getLabora()}' WHERE usuario_id={$this->id};";
 
         $save = $this->db->query($sql);
         // echo $this->db->error;
         // die();
+        $result = false;
+        
+        if ($save) {
+            $result = true;
+        }
+
+        return $result;
+    }
+
+    public function editTutor()
+    {
+        $sql = "UPDATE tutor SET nombre ='{$this->getNombreTutor()}', rfc ='{$this->getRfcTutor()}', padre ='{$this->getPadre()}', madre ='{$this->getMadre()}' WHERE alumno_id={$this->id};";
+
+        $save = $this->db->query($sql);
+        
         $result = false;
         
         if ($save) {

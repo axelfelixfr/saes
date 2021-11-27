@@ -9,7 +9,6 @@
 <div class="row pb-3">
     <div class="col-6 text-end">
         <h1 class="mb-5">Menú principal de alumnos</h1>
-        <!-- <?= var_dump($_SESSION['identity']) ?> -->
         <h2 class="text-warning">
             <p class="mb-0">
                 <?= Utils::saludar() ?>

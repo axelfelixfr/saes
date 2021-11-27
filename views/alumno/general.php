@@ -48,7 +48,7 @@
         </ul>
         <div class="tab-content p-4 border border-1" style="height: auto;" id="tabGeneral">
             <div class="tab-pane fade show active" id="generales" role="tabpanel" aria-labelledby="generales-tab">
-                <form class="row ms-0 ms-md-4" method="POST">
+                <form class="row ms-0 ms-md-4">
                     <div class="col-6 col-md-3 fw-bold">BOLETA:</div>
                     <div class="col fw-normal">
                         <?= $alumno->general->clave_usuario ?>
@@ -155,7 +155,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="direccion" role="tabpanel" aria-labelledby="direccion-tab">
-                <form class="row ms-0 ms-md-4" method="POST">
+                <form class="row ms-0 ms-md-4">
                     <div class="col-6 col-md-4 fw-bold">CALLE:</div>
                     <div class="col fw-normal">
                         <input id="calle" name="calle" type="text" class="form-control form-control-sm d-none" value="<?= $alumno->direccion->calle ?>">
@@ -282,7 +282,7 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="tutor" role="tabpanel" aria-labelledby="tutor-tab">
-                <form class="row ms-0 ms-md-4" method="POST">
+                <form class="row ms-0 ms-md-4">
                     <div class="col-6 col-md-5 fw-bold">NOMBRE DEL TUTOR:</div>
                     <div class="col fw-normal">
                         <input id="nombreTutor" name="nombreTutor" type="text" value="<?= $alumno->tutor->nombre ?>" class="form-control form-control-sm d-none">

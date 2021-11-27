@@ -80,8 +80,6 @@
                 <?php endif; ?>
                 <!-- <a href="<?=base_url?>user/logout">Cerrar sesión</a> -->
             </div>
-            <!-- <?= var_dump($_SESSION['nueva']) ?> -->
-            <!-- <?= var_dump($_SESSION['alumno']) ?> -->
             <!-- Inicio del Login-->
             <?php if (!isset($_SESSION['identity'])) :?>
                 <?php if (isset($_SESSION['error_login']) && $_SESSION['error_login']) : ?>
@@ -91,22 +89,18 @@
                 <div class="card m-3">
                     <div class="card-body">
                         <!-- Formulario-->
-                        <form method="POST" id="formLogin">
+                        <form id="formLogin">
                             <div class="mb-3">
-                                <!-- <?= var_dump($_SESSION['error_login']) ?> -->
                                 <!-- Correo Electronico -->
-                                <!-- FALTA AGREGAR ICONOS A INPUTS -->
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Correo Electrónico</label>
                                     <input type="email" class="form-control" name="email" id="email" placeholder="Tu correo" required>
                                 </div>
-                                <!-- FIN Correo Electronico -->
                                 <!-- Contraseña -->
                                 <div class="mb-3">
                                     <label for="password" class="form-label">Contraseña</label>
                                     <input type="password" class="form-control" name="password" id="password" placeholder="Tu contraseña" required>
                                 </div>
-                                <!-- FIN Contraseña -->
                                 <div class="col-12 text-center">
                                     <input type="submit" id="submitLogin" class="btn btn-primary" value="Entrar">
                                 </div>

@@ -122,9 +122,9 @@
                     </div>
                 </div>
             </div>
-            <div class="sb-sidenav-footer">
-                <a href="<?=base_url?>user/logout" class="text-white text-decoration-none nav-ipn-item">Cerrar sesión</a>
-                <div class="small">
+            <div class="sb-sidenav-footer m-2">
+                <a href="<?=base_url?>user/logout" class="text-white text-decoration-none nav-ipn-item p-1">Cerrar sesión <i class="fas fa-sign-out-alt"></i></a>
+                <div class="small ps-1">
                     <?= $_SESSION['identity']->general->clave_usuario ?>
                 </div>
             </div>

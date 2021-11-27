@@ -7,9 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon -->
     <link rel="icon" type="favicon/x-icon" href="<?=base_url?>assets/img/favicon/IPN.ico" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?=base_url?>assets/css/all.min.css">
+    <!-- Sweet Alert 2 -->
+    <link rel="stylesheet" href="<?=base_url?>assets/css/sweetalert2.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="<?=base_url?>assets/css/main.css">
-    <!-- Toast -->
+    <link rel="stylesheet" href="<?=base_url?>assets/css/main.min.css">
+    <!-- Toastr -->
     <link rel="stylesheet" href="<?=base_url?>assets/css/toastr.min.css">
     <title>SAES - UPIICSA</title>
 </head>

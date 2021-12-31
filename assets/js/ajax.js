@@ -1,15 +1,147 @@
 $(document).ready(() => {
-    // LOGIN
-    let formIsCorrect
 
-    $("#formLogin").on("click", "#submitLogin", (e) => {
+    let formActaIsCorrect;
+    $('#formCalificar').on('click', '#cerrarActas', e => {
+        e.preventDefault();
+
+        formActaIsCorrect = true;
+        const alumnosCalif = new Array();
+
+        let valuesCalifAlum = $('.calificacionAlumno');
+        let valueActa = $('#actaAsignatura');
+        let valueAsignatura;
+        let valueEvaluacion;
+
+        if (valuesCalifAlum.val() == null) {
+            toastr.error('Para terminar de capturar calificaciones es necesario asignar una calificación a cada alumno', 'Calificaciones incompletas');
+            formActaIsCorrect = false;
+        } else {
+
+            valueAsignatura = $(valueActa).data('asignatura');
+
+            valueEvaluacion = $(valueActa).data('evaluacion');
+
+            console.log(valueAsignatura, valueEvaluacion);
+        }
+
+        if (formActaIsCorrect) {
+            $.post({
+                url: 'index.php',
+                type: 'POST',
+                cache: false,
+                data: {
+                    user: 'profesor',
+                    actionAjax: 'cerrarActaEvaluacion',
+                    actaAsignatura: valueAsignatura,
+                    actaEvaluacion: valueEvaluacion
+                },
+                success: function(data) {
+                    if (data) {
+
+                        if (data == 'Se realizo con éxito') {
+                            location.href = 'http://localhost/saes/profesor/calificaciones';
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                text: 'Hubo un error al terminar la captura de calificaciones',
+                                showCloseButton: true
+                            });
+                        }
+                        console.log(data);
+
+                    }
+                }
+            });
+        }
+    });
+
+
+    let formCalifIsCorrect;
+
+    $('#formCalificar').on('click', '#guardarCalif', e => {
+        e.preventDefault();
+
+        formCalifIsCorrect = true;
+        const alumnosCalif = new Array();
+
+        let valuesCalifAlum = $('.calificacionAlumno');
+
+        if (valuesCalifAlum.val() == null) {
+            toastr.error('Debe asignar una calificación a cada alumno', 'Calificaciones incompletas');
+            formCalifIsCorrect = false;
+        } else {
+            valuesCalifAlum.each(function() {
+                let valueCalif = $(this).val();
+                let valueEvlClv = $(this).data('evaluacion');
+                let valueAlumClv = $(this).data('alumno');
+                let valueMaterClv = $(this).data('materia');
+                alumnosCalif.push({
+                    claveAlumno: valueAlumClv,
+                    claveEvaluacion: valueEvlClv,
+                    claveMateria: valueMaterClv,
+                    calificacion: valueCalif,
+                });
+            });
+            // console.log(alumnosCalif);
+        }
+
+        if (formCalifIsCorrect) {
+            $.post({
+                url: 'index.php',
+                type: 'POST',
+                cache: false,
+                data: {
+                    user: 'profesor',
+                    actionAjax: 'calificarAlumnos',
+                    evaluacionAlumnos: alumnosCalif
+                },
+                success: function(data) {
+
+                    if (data == 'Algo fallo' || data == 'Aquí hubo un error') {
+
+                        Swal.fire({
+                            icon: 'error',
+                            text: 'Hubo un error al ingresar las calificaciones',
+                            showCloseButton: true
+                        });
+
+                    } else {
+                        Swal.fire({
+                            icon: 'success',
+                            text: 'Ha evaluado correctamente a sus alumnos',
+                            showCloseButton: true
+                        });
+
+                        let jsonData = JSON.parse(data);
+                        let htmlCalificaciones = $('.almacenarCalif');
+
+                        htmlCalificaciones.each(function() {
+                            let valueAlumno = $(this).data('alumno');
+
+                            let arrayCalif = jsonData.forEach(evaluacion => {
+                                if (evaluacion.claveAlumno == valueAlumno) {
+                                    $(this).html(evaluacion.calificacion);
+                                }
+                            });
+                        });
+
+                    }
+                }
+            });
+        }
+    });
+
+    // LOGIN
+    let formIsCorrect;
+
+    $('#formLogin').on('click', '#submitLogin', e => {
         e.preventDefault();
 
         formIsCorrect = true;
 
         // Variables para validación
-        let valEmail = $("#email").val();
-        let valPassword = $("#password").val();
+        let valEmail = $('#email').val();
+        let valPassword = $('#password').val();
 
         let emptyEmail = validator.isEmpty(valEmail);
         let emptyPassword = validator.isEmpty(valPassword);
@@ -30,22 +162,39 @@ $(document).ready(() => {
 
             if (!validationRegex) {
                 formIsCorrect = false;
-                toastr.error('El dominio debe ser "@alumno.ipn.mx" o "@profesor.ipn.mx"', 'Dominio incorrecto');
+                toastr.error(
+                    'El dominio debe ser "@alumno.ipn.mx" o "@profesor.ipn.mx"',
+                    'Dominio incorrecto'
+                );
             }
         }
 
         if (formIsCorrect) {
             $.post({
-                url: 'http://localhost/saes/user/login',
+                // url: 'http://localhost/saes/user/login',
+                url: 'index.php',
                 type: 'POST',
                 cache: false,
-                data: { email: $("#email").val(), password: $("#password").val() },
+                data: {
+                    user: 'user',
+                    actionAjax: 'login',
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                },
                 success: function(data) {
-                    location.href = 'http://localhost/saes/alumno/main';
+                    var jsonData = JSON.parse(data);
+
+                    let perfilName = jsonData.perfil_name;
+
+                    if (perfilName == 'alumno') {
+                        location.href = 'http://localhost/saes/alumno/main';
+                    } else if (perfilName == 'profesor') {
+                        location.href = 'http://localhost/saes/profesor/main';
+                    }
+
                 }
             });
         }
-
     });
 
     // GENERAL
@@ -53,32 +202,40 @@ $(document).ready(() => {
 
     toggleGeneral = () => {
         // Input cartilla
-        $('#cartilla, #cartillaDisplay, #pasaporte, #pasaporteDisplay, #sexo, #sexoDisplay, #formGeneral').toggleClass("d-none");
+        $(
+            '#cartilla, #cartillaDisplay, #pasaporte, #pasaporteDisplay, #sexo, #sexoDisplay, #formGeneral'
+        ).toggleClass('d-none');
 
-        valuebtnGeneral ? $('#modificarGeneral').html("Cancelar") : $('#modificarGeneral').html("Modificar");
+        valuebtnGeneral
+            ?
+            $('#modificarGeneral').html('Cancelar') :
+            $('#modificarGeneral').html('Modificar');
 
         valuebtnGeneral = !valuebtnGeneral;
-    }
+    };
 
     $('#modificarGeneral').click(function(e) {
         e.preventDefault();
         toggleGeneral();
     });
 
-    $("#generales").on("click", "#formGeneral", (e) => {
+    $('#generales').on('click', '#formGeneral', e => {
         e.preventDefault();
 
         formIsCorrect = true;
 
         // Variables para validación
-        let valCartilla = $("#cartilla").val();
-        let valPasaporte = $("#pasaporte").val();
+        let valCartilla = $('#cartilla').val();
+        let valPasaporte = $('#pasaporte').val();
 
         let validationCharCartilla = validateChar(valCartilla);
         let validationCharPasaporte = validateChar(valPasaporte);
 
         if (!validationCharCartilla || !validationCharPasaporte) {
-            toastr.error('No usar carácteres especiales ni espacios', 'Campos incorrectos');
+            toastr.error(
+                'No usar carácteres especiales ni espacios',
+                'Campos incorrectos'
+            );
             formIsCorrect = false;
         }
 
@@ -86,19 +243,31 @@ $(document).ready(() => {
         let emptyPasaporte = validator.isEmpty(valPasaporte);
 
         if (!emptyCartilla) {
-            let validationMinCartilla = validator.isLength(valCartilla, { min: 10, max: 30 });
+            let validationMinCartilla = validator.isLength(valCartilla, {
+                min: 10,
+                max: 30
+            });
 
             if (!validationMinCartilla) {
-                toastr.error('Mínimo deben ser 10 carácteres y máximo 30', 'Cartilla incorrecta');
+                toastr.error(
+                    'Mínimo deben ser 10 carácteres y máximo 30',
+                    'Cartilla incorrecta'
+                );
                 formIsCorrect = false;
             }
         }
 
         if (!emptyPasaporte) {
-            let validationMinPasaporte = validator.isLength(valPasaporte, { min: 10, max: 30 });
+            let validationMinPasaporte = validator.isLength(valPasaporte, {
+                min: 10,
+                max: 30
+            });
 
             if (!validationMinPasaporte) {
-                toastr.error('Mínimo deben ser 10 carácteres y máximo 30', 'Pasaporte incorrecto');
+                toastr.error(
+                    'Mínimo deben ser 10 carácteres y máximo 30',
+                    'Pasaporte incorrecto'
+                );
                 formIsCorrect = false;
             }
         }
@@ -107,9 +276,15 @@ $(document).ready(() => {
             $.ajax({
                 url: 'index.php',
                 type: 'POST',
-                dataType: "text",
+                dataType: 'text',
                 cache: false,
-                data: { user: "alumno", tabName: "tabAlumnoGeneral", cartilla: $("#cartilla").val(), pasaporte: $("#pasaporte").val(), sexo: $("#sexo").val() },
+                data: {
+                    user: 'alumno',
+                    actionAjax: 'tabAlumnoGeneral',
+                    cartilla: $('#cartilla').val(),
+                    pasaporte: $('#pasaporte').val(),
+                    sexo: $('#sexo').val()
+                },
                 success: function(data) {
                     if (data.length === 0) {
                         Swal.fire({
@@ -138,10 +313,8 @@ $(document).ready(() => {
                         let sexoDisp = jsonData.sexo == 'H' ? 'Hombre' : 'Mujer';
                         $('#sexoDisplay').html(sexoDisp);
 
-
                         setTimeout(toggleGeneral, 1000);
                     }
-
                 }
             });
         }
@@ -152,25 +325,30 @@ $(document).ready(() => {
 
     toggleNacimiento = () => {
         // Input nacimiento
-        $('#fechaNacimiento, #nacimientoDisplay, #formNacimiento').toggleClass("d-none");
+        $('#fechaNacimiento, #nacimientoDisplay, #formNacimiento').toggleClass(
+            'd-none'
+        );
 
-        valuebtnNacimiento ? $('#modificarNacimiento').html("Cancelar") : $('#modificarNacimiento').html("Modificar");
+        valuebtnNacimiento
+            ?
+            $('#modificarNacimiento').html('Cancelar') :
+            $('#modificarNacimiento').html('Modificar');
 
         valuebtnNacimiento = !valuebtnNacimiento;
-    }
+    };
 
     $('#modificarNacimiento').click(function(e) {
         e.preventDefault();
         toggleNacimiento();
     });
 
-    $("#nacimiento").on("click", "#formNacimiento", (e) => {
+    $('#nacimiento').on('click', '#formNacimiento', e => {
         e.preventDefault();
 
         formIsCorrect = true;
 
         // Variables para validación
-        let valNacimiento = $("#fechaNacimiento").val();
+        let valNacimiento = $('#fechaNacimiento').val();
 
         let emptyNacimiento = validator.isEmpty(valNacimiento);
 
@@ -190,9 +368,13 @@ $(document).ready(() => {
             $.ajax({
                 url: 'index.php',
                 type: 'POST',
-                dataType: "text",
+                dataType: 'text',
                 cache: false,
-                data: { user: "alumno", tabName: "tabAlumnoNacimiento", nacimiento: $("#fechaNacimiento").val() },
+                data: {
+                    user: 'alumno',
+                    actionAjax: 'tabAlumnoNacimiento',
+                    nacimiento: $('#fechaNacimiento').val()
+                },
                 success: function(data) {
                     if (data.length === 0) {
                         Swal.fire({
@@ -214,7 +396,6 @@ $(document).ready(() => {
                         $('#fechaNacimiento').val(jsonData.nacimiento);
                         $('#nacimientoDisplay').html(jsonData.nacimiento);
 
-
                         setTimeout(toggleNacimiento, 1000);
                     }
                 }
@@ -227,33 +408,38 @@ $(document).ready(() => {
 
     toggleDireccion = () => {
         // Inputs y display
-        $('#calle, #calleDisplay, #numExt, #numExtDisplay, #numInt, #numIntDisplay, #colonia, #coloniaDisplay, #codigoPostal, #codigoPostalDisplay, #estado, #estadoDisplay, #municipio, #municipioDisplay, #movil, #movilDisplay, #emailGeneral, #emailDisplay, #telOficina, #telOficinaDisplay, #labora, #laboraDisplay, #formDireccion').toggleClass("d-none");
+        $(
+            '#calle, #calleDisplay, #numExt, #numExtDisplay, #numInt, #numIntDisplay, #colonia, #coloniaDisplay, #codigoPostal, #codigoPostalDisplay, #estado, #estadoDisplay, #municipio, #municipioDisplay, #movil, #movilDisplay, #emailGeneral, #emailDisplay, #telOficina, #telOficinaDisplay, #labora, #laboraDisplay, #formDireccion'
+        ).toggleClass('d-none');
 
-        valuebtnDireccion ? $('#modificarDireccion').html("Cancelar") : $('#modificarDireccion').html("Modificar");
+        valuebtnDireccion
+            ?
+            $('#modificarDireccion').html('Cancelar') :
+            $('#modificarDireccion').html('Modificar');
 
         valuebtnDireccion = !valuebtnDireccion;
-    }
+    };
 
     $('#modificarDireccion').click(function(e) {
         e.preventDefault();
         toggleDireccion();
     });
 
-    $("#direccion").on("click", "#formDireccion", () => {
+    $('#direccion').on('click', '#formDireccion', () => {
         formIsCorrect = true;
 
         // Variables para validación
-        let valCalle = $("#calle").val();
-        let valNumExt = $("#numExt").val();
-        let valNumInt = $("#numInt").val();
-        let valColonia = $("#colonia").val();
-        let valCodigoP = $("#codigoPostal").val();
-        let valEstado = $("#estado").val();
-        let valMunicipio = $("#municipio").val();
-        let valMovil = $("#movil").val();
-        let valEmailG = $("#emailGeneral").val();
-        let valTelOfic = $("#telOficina").val();
-        let valLabora = $("#labora").val();
+        let valCalle = $('#calle').val();
+        let valNumExt = $('#numExt').val();
+        let valNumInt = $('#numInt').val();
+        let valColonia = $('#colonia').val();
+        let valCodigoP = $('#codigoPostal').val();
+        let valEstado = $('#estado').val();
+        let valMunicipio = $('#municipio').val();
+        let valMovil = $('#movil').val();
+        let valEmailG = $('#emailGeneral').val();
+        let valTelOfic = $('#telOficina').val();
+        let valLabora = $('#labora').val();
 
         // Requeridas
         let emptyCalle = validator.isEmpty(valCalle);
@@ -270,14 +456,25 @@ $(document).ready(() => {
         let emptyEmailG = validator.isEmpty(valEmailG);
         let emptyTelOfic = validator.isEmpty(valTelOfic);
 
-        if (emptyCalle || emptyNumExt || emptyColonia || emptyCodigoP || emptyEstado || emptyMunicipio || emptyLabora) {
+        if (
+            emptyCalle ||
+            emptyNumExt ||
+            emptyColonia ||
+            emptyCodigoP ||
+            emptyEstado ||
+            emptyMunicipio ||
+            emptyLabora
+        ) {
             toastr.error('Rellene el formulario', 'Campos incompletos');
             formIsCorrect = false;
         } else {
             let validationNumExt = validator.isLength(valNumExt, { min: 1, max: 20 });
 
             if (!validationNumExt) {
-                toastr.error('Mínimo deben ser 1 carácter y máximo 20', 'Número exterior incorrecto');
+                toastr.error(
+                    'Mínimo deben ser 1 carácter y máximo 20',
+                    'Número exterior incorrecto'
+                );
                 formIsCorrect = false;
             }
 
@@ -317,25 +514,32 @@ $(document).ready(() => {
             }
 
             if (!validationLabora) {
-                toastr.error('No usar carácteres especiales', 'Campo de labor incorrecto');
+                toastr.error(
+                    'No usar carácteres especiales',
+                    'Campo de labor incorrecto'
+                );
                 formIsCorrect = false;
             }
-
         }
 
         // Num interior
         if (!emptyNumInt) {
-
             let validationNumInt = validator.isLength(valNumInt, { min: 1, max: 20 });
 
             if (!validationNumInt) {
-                toastr.error('Mínimo deben ser 1 carácter y máximo 20', 'Número interior incorrecto');
+                toastr.error(
+                    'Mínimo deben ser 1 carácter y máximo 20',
+                    'Número interior incorrecto'
+                );
                 formIsCorrect = false;
             }
 
             let validationChar = validateString(valNumInt);
             if (!validationChar) {
-                toastr.error('No usar carácteres especiales', 'Número interior incorrecto');
+                toastr.error(
+                    'No usar carácteres especiales',
+                    'Número interior incorrecto'
+                );
                 formIsCorrect = false;
             }
         }
@@ -355,7 +559,10 @@ $(document).ready(() => {
             let validationMovil = validator.isMobilePhone(valMovil, 'es-MX');
 
             if (!validationMovil) {
-                toastr.error('Es necesario que tenga la extensión 52', 'Teléfono incorrecto');
+                toastr.error(
+                    'Es necesario que tenga la extensión 52',
+                    'Teléfono incorrecto'
+                );
                 formIsCorrect = false;
             }
         }
@@ -364,21 +571,36 @@ $(document).ready(() => {
             let validationTelOfi = validator.isMobilePhone(valTelOfic, 'es-MX');
 
             if (!validationTelOfi) {
-                toastr.error('Es necesario que tenga la extensión 52', 'Teléfono de oficina incorrecto');
+                toastr.error(
+                    'Es necesario que tenga la extensión 52',
+                    'Teléfono de oficina incorrecto'
+                );
                 formIsCorrect = false;
             }
         }
-
 
         if (formIsCorrect) {
             $.ajax({
                 url: 'index.php',
                 type: 'POST',
-                dataType: "text",
+                dataType: 'text',
                 cache: false,
-                data: { user: "alumno", tabName: "tabAlumnoDireccion", calle: $("#calle").val(), numExt: $("#numExt").val(), numInt: $("#numInt").val(), colonia: $("#colonia").val(), codigoPostal: $("#codigoPostal").val(), estado: $("#estado").val(), municipio: $("#municipio").val(), movil: $("#movil").val(), emailGeneral: $("#emailGeneral").val(), telOficina: $("#telOficina").val(), labora: $("#labora").val() },
+                data: {
+                    user: 'alumno',
+                    actionAjax: 'tabAlumnoDireccion',
+                    calle: $('#calle').val(),
+                    numExt: $('#numExt').val(),
+                    numInt: $('#numInt').val(),
+                    colonia: $('#colonia').val(),
+                    codigoPostal: $('#codigoPostal').val(),
+                    estado: $('#estado').val(),
+                    municipio: $('#municipio').val(),
+                    movil: $('#movil').val(),
+                    emailGeneral: $('#emailGeneral').val(),
+                    telOficina: $('#telOficina').val(),
+                    labora: $('#labora').val()
+                },
                 success: function(data) {
-
                     if (data.length === 0) {
                         Swal.fire({
                             icon: 'error',
@@ -388,7 +610,6 @@ $(document).ready(() => {
 
                         toggleDireccion();
                     } else {
-
                         var jsonData = JSON.parse(data);
 
                         Swal.fire({
@@ -432,7 +653,6 @@ $(document).ready(() => {
 
                         setTimeout(toggleDireccion, 1000);
                     }
-
                 }
             });
         }
@@ -443,28 +663,33 @@ $(document).ready(() => {
 
     toggleTutor = () => {
         // Input cartilla
-        $('#nombreTutor, #nombreTutorDisplay, #rfcTutor, #rfcDisplay, #padre, #padreDisplay, #madre, #madreDisplay, #formTutor').toggleClass("d-none");
+        $(
+            '#nombreTutor, #nombreTutorDisplay, #rfcTutor, #rfcDisplay, #padre, #padreDisplay, #madre, #madreDisplay, #formTutor'
+        ).toggleClass('d-none');
 
-        valuebtnTutor ? $('#modificarTutor').html("Cancelar") : $('#modificarTutor').html("Modificar");
+        valuebtnTutor
+            ?
+            $('#modificarTutor').html('Cancelar') :
+            $('#modificarTutor').html('Modificar');
 
         valuebtnTutor = !valuebtnTutor;
-    }
+    };
 
     $('#modificarTutor').click(function(e) {
         e.preventDefault();
         toggleTutor();
     });
 
-    $("#tutor").on("click", "#formTutor", (e) => {
+    $('#tutor').on('click', '#formTutor', e => {
         e.preventDefault();
 
         formIsCorrect = true;
 
         // Variables para validación
-        let valNombreTut = $("#nombreTutor").val();
-        let valRfcTutor = $("#rfcTutor").val();
-        let valPadre = $("#padre").val();
-        let valMadre = $("#madre").val();
+        let valNombreTut = $('#nombreTutor').val();
+        let valRfcTutor = $('#rfcTutor').val();
+        let valPadre = $('#padre').val();
+        let valMadre = $('#madre').val();
 
         let emptyNombreTut = validator.isEmpty(valNombreTut);
 
@@ -474,7 +699,10 @@ $(document).ready(() => {
         } else {
             let validationTutor = validateName(valNombreTut);
             if (!validationTutor) {
-                toastr.error('No usar carácteres especiales ni números', 'Tutor incorrecto');
+                toastr.error(
+                    'No usar carácteres especiales ni números',
+                    'Tutor incorrecto'
+                );
                 formIsCorrect = false;
             }
         }
@@ -486,7 +714,10 @@ $(document).ready(() => {
         if (!emptyRfcTutor) {
             let validationRfcTut = validateChar(valRfcTutor);
             if (!validationRfcTut) {
-                toastr.error('No usar carácteres especiales ni espacios', 'Rfc incorrecto');
+                toastr.error(
+                    'No usar carácteres especiales ni espacios',
+                    'Rfc incorrecto'
+                );
                 formIsCorrect = false;
             }
         }
@@ -494,28 +725,39 @@ $(document).ready(() => {
         if (!emptyPadre) {
             let validationPadre = validateName(valPadre);
             if (!validationPadre) {
-                toastr.error('No usar carácteres especiales ni números', 'Padre incorrecto');
+                toastr.error(
+                    'No usar carácteres especiales ni números',
+                    'Padre incorrecto'
+                );
                 formIsCorrect = false;
             }
-
         }
 
         if (!emptyMadre) {
             let validationMadre = validateName(valMadre);
             if (!validationMadre) {
-                toastr.error('No usar carácteres especiales ni números', 'Madre incorrecta');
+                toastr.error(
+                    'No usar carácteres especiales ni números',
+                    'Madre incorrecta'
+                );
                 formIsCorrect = false;
             }
-
         }
 
         if (formIsCorrect) {
             $.ajax({
                 url: 'index.php',
                 type: 'POST',
-                dataType: "text",
+                dataType: 'text',
                 cache: false,
-                data: { user: "alumno", tabName: "tabAlumnoTutor", nombreTutor: $("#nombreTutor").val(), rfcTutor: $("#rfcTutor").val(), padre: $("#padre").val(), madre: $("#madre").val() },
+                data: {
+                    user: 'alumno',
+                    actionAjax: 'tabAlumnoTutor',
+                    nombreTutor: $('#nombreTutor').val(),
+                    rfcTutor: $('#rfcTutor').val(),
+                    padre: $('#padre').val(),
+                    madre: $('#madre').val()
+                },
                 success: function(data) {
                     if (data.length === 0) {
                         Swal.fire({
@@ -548,7 +790,6 @@ $(document).ready(() => {
 
                         setTimeout(toggleTutor, 1000);
                     }
-
                 }
             });
         }

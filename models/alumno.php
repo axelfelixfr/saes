@@ -2,7 +2,7 @@
 
 class Alumno
 {
-    private $id;
+    private $clave;
     private $cartilla;
     private $pasaporte;
     private $sexo;
@@ -26,14 +26,14 @@ class Alumno
         $this->db = Database::connect();
     }
 
-    function getId()
+    function getClave()
     {
-        return $this->id;
+        return $this->clave;
     }
 
-    function setId($id)
+    function setClave($clave)
     {
-        $this->id = $id;
+        $this->clave = $clave;
     }
     
     function getCartilla()
@@ -236,7 +236,7 @@ class Alumno
 
     public function getAlumno()
     {
-        $sql = "SELECT * FROM usuario WHERE id = {$this->id};";
+        $sql = "SELECT * FROM usuario WHERE clave_usuario = {$this->clave};";
         $userAlumno = $this->db->query($sql);
 
         if ($userAlumno && $userAlumno->num_rows == 1) {
@@ -247,7 +247,7 @@ class Alumno
 
     public function getDireccionAlumno()
     {
-        $sql = "SELECT * FROM direccion WHERE usuario_id = {$this->id};";
+        $sql = "SELECT * FROM direccion WHERE usuario_clave = {$this->clave};";
         $direccionAlumno = $this->db->query($sql);
 
         if ($direccionAlumno && $direccionAlumno->num_rows == 1) {
@@ -259,7 +259,7 @@ class Alumno
 
     public function getTutor()
     {
-        $sql = "SELECT * FROM tutor WHERE alumno_id = {$this->id};";
+        $sql = "SELECT * FROM tutor WHERE alumno_clave = {$this->clave};";
         $tutorAlumno = $this->db->query($sql);
 
         if ($tutorAlumno && $tutorAlumno->num_rows == 1) {
@@ -270,7 +270,7 @@ class Alumno
 
     public function editGeneral()
     {
-        $sql = "UPDATE usuario SET cartilla ='{$this->getCartilla()}', pasaporte='{$this->getPasaporte()}', sexo='{$this->getSexo()}' WHERE id={$this->id};";
+        $sql = "UPDATE usuario SET cartilla ='{$this->getCartilla()}', pasaporte='{$this->getPasaporte()}', sexo='{$this->getSexo()}' WHERE clave_usuario={$this->clave};";
         
         $save = $this->db->query($sql);
         
@@ -283,7 +283,7 @@ class Alumno
 
     public function editNacimiento()
     {
-        $sql = "UPDATE usuario SET nacimiento ='{$this->getNacimiento()}' WHERE id={$this->id};";
+        $sql = "UPDATE usuario SET nacimiento ='{$this->getNacimiento()}' WHERE clave_usuario={$this->clave};";
         
         $save = $this->db->query($sql);
         
@@ -296,7 +296,7 @@ class Alumno
 
     public function editDireccion()
     {
-        $sql = "UPDATE direccion SET calle ='{$this->getCalle()}', num_ext ='{$this->getNumExt()}', num_int ='{$this->getNumInt()}', colonia ='{$this->getColonia()}', codigo_postal ={$this->getCodigoPostal()}, estado ='{$this->getEstado()}', municipio ='{$this->getMunicipio()}', movil ='{$this->getMovil()}', email ='{$this->getEmailGeneral()}', tel_oficina ='{$this->getTelOficina()}', labora ='{$this->getLabora()}' WHERE usuario_id={$this->id};";
+        $sql = "UPDATE direccion SET calle ='{$this->getCalle()}', num_ext ='{$this->getNumExt()}', num_int ='{$this->getNumInt()}', colonia ='{$this->getColonia()}', codigo_postal ={$this->getCodigoPostal()}, estado ='{$this->getEstado()}', municipio ='{$this->getMunicipio()}', movil ='{$this->getMovil()}', email ='{$this->getEmailGeneral()}', tel_oficina ='{$this->getTelOficina()}', labora ='{$this->getLabora()}' WHERE usuario_clave={$this->clave};";
 
         $save = $this->db->query($sql);
         // echo $this->db->error;
@@ -312,7 +312,7 @@ class Alumno
 
     public function editTutor()
     {
-        $sql = "UPDATE tutor SET nombre ='{$this->getNombreTutor()}', rfc ='{$this->getRfcTutor()}', padre ='{$this->getPadre()}', madre ='{$this->getMadre()}' WHERE alumno_id={$this->id};";
+        $sql = "UPDATE tutor SET nombre ='{$this->getNombreTutor()}', rfc ='{$this->getRfcTutor()}', padre ='{$this->getPadre()}', madre ='{$this->getMadre()}' WHERE alumno_clave={$this->clave};";
 
         $save = $this->db->query($sql);
         

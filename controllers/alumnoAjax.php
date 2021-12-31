@@ -5,7 +5,7 @@ class alumnoAjax
 {
     public function updateGeneral()
     {
-        if (isset($_POST['tabName'])) {
+        if (isset($_POST['actionAjax'])) {
             if (isset($_POST['sexo']) && !empty($_POST['sexo'])) {
                 $cartilla = isset($_POST['cartilla']) ? $_POST['cartilla'] : false;
                 $pasaporte = isset($_POST['pasaporte']) ? $_POST['pasaporte'] : false;
@@ -19,8 +19,8 @@ class alumnoAjax
                     if ($pasaporte) {
                         $alumno->setPasaporte($pasaporte);
                     }
-                    $id = $_SESSION['identity']->general->id;
-                    $alumno->setId($id);
+                    $clave_alumno = $_SESSION['identity']->general->clave_usuario;
+                    $alumno->setClave($clave_alumno);
 
                     $consultUpdate = $alumno->editGeneral();
                     
@@ -39,15 +39,15 @@ class alumnoAjax
 
     public function updateNacimiento()
     {
-        if (isset($_POST['tabName'])) {
+        if (isset($_POST['actionAjax'])) {
             if (isset($_POST['nacimiento']) && !empty($_POST['nacimiento'])) {
                 $nacimiento = isset($_POST['nacimiento']) ? $_POST['nacimiento'] : false;
                 if ($nacimiento) {
                     $alumno = new Alumno();
                     $alumno->setNacimiento($nacimiento);
                     
-                    $id = $_SESSION['identity']->general->id;
-                    $alumno->setId($id);
+                    $clave_alumno = $_SESSION['identity']->general->clave_usuario;
+                    $alumno->setClave($clave_alumno);
                     
                     $consultUpdate = $alumno->editNacimiento();
                     $nuevoAlumno = $alumno->getAlumno();
@@ -65,7 +65,7 @@ class alumnoAjax
 
     public function updateDireccion()
     {
-        if (isset($_POST['tabName'])) {
+        if (isset($_POST['actionAjax'])) {
             if (isset($_POST['calle']) && !empty($_POST['calle']) && isset($_POST['numExt']) && !empty($_POST['numExt']) && isset($_POST['numInt']) && isset($_POST['colonia']) && !empty($_POST['colonia']) && isset($_POST['codigoPostal']) && !empty($_POST['codigoPostal']) && isset($_POST['estado']) && !empty($_POST['estado']) && isset($_POST['municipio']) && !empty($_POST['municipio']) && isset($_POST['movil']) && isset($_POST['emailGeneral']) && isset($_POST['telOficina']) && isset($_POST['labora'])) {
                 // Obligatorias
                 $calle = isset($_POST['calle']) ? $_POST['calle'] : false;
@@ -107,8 +107,8 @@ class alumnoAjax
                         $alumno->setLabora($labora);
                     }
                     
-                    $id = $_SESSION['identity']->general->id;
-                    $alumno->setId($id);
+                    $clave_alumno = $_SESSION['identity']->general->clave_usuario;
+                    $alumno->setClave($clave_alumno);
                     
                     $consultUpdate = $alumno->editDireccion();
 
@@ -128,7 +128,7 @@ class alumnoAjax
 
     public function updateTutor()
     {
-        if (isset($_POST['tabName'])) {
+        if (isset($_POST['actionAjax'])) {
             if (isset($_POST['nombreTutor']) && !empty($_POST['nombreTutor'])) {
                 $nombreTutor = isset($_POST['nombreTutor']) ? $_POST['nombreTutor'] : false;
                 $rfcTutor = isset($_POST['rfcTutor']) ? $_POST['rfcTutor'] : false;
@@ -151,9 +151,8 @@ class alumnoAjax
                         $alumno->setMadre($madre);
                     }
                     
-                    $id = $_SESSION['identity']->general->id;
-
-                    $alumno->setId($id);
+                    $clave_alumno = $_SESSION['identity']->general->clave_usuario;
+                    $alumno->setClave($clave_alumno);
 
                     $consultUpdate = $alumno->editTutor();
                     

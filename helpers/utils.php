@@ -62,4 +62,96 @@ class Utils
             echo "Buenas noches";
         }
     }
+
+    public static function sacarPromedio($primer, $segundo, $tercer)
+    {
+        $calificaciones = array();
+        $suma = 0;
+        /*
+
+        $hayNP = false;
+
+        if ($primer == 'NP') {
+            $hayNP = true;
+        } elseif ($primer != null) {
+            $calif_primer = (int)$primer;
+            array_push($calificaciones, $calif_primer);
+        }
+
+        if ($segundo == 'NP') {
+            $hayNP = true;
+        } elseif ($segundo != null) {
+            $calif_segundo = (int)$segundo;
+            array_push($calificaciones, $calif_segundo);
+        }
+        if ($tercer == 'NP') {
+            $hayNP = true;
+        } elseif ($tercer != null) {
+            $calif_tercer = (int)$tercer;
+            array_push($calificaciones, $calif_tercer);
+        }
+
+        if ($hayNP) {
+            return 'NP';
+        } else {
+            // Hacemos la suma del array
+            $suma = array_sum($calificaciones);
+
+            // Contamos cuantos elementos hay en el array
+            $total_numeros = count($calificaciones);
+
+            // Realizamos el promedio
+            $media = $suma/$total_numeros;
+
+            // Realizamos el redondeo
+            $promedio = round($media);
+
+
+            return $promedio;
+        }
+        */
+       
+        if ($primer != null) {
+            if ($primer == 'NP') {
+                $calif_primer = 0;
+            } else {
+                $calif_primer = (int)$primer;
+            }
+            array_push($calificaciones, $calif_primer);
+        }
+
+        if ($segundo != null) {
+            if ($segundo == 'NP') {
+                $calif_segundo = 0;
+            } else {
+                $calif_segundo = (int)$segundo;
+            }
+            array_push($calificaciones, $calif_segundo);
+        }
+        
+        if ($tercer != null) {
+            if ($tercer == 'NP') {
+                $calif_tercer = 0;
+            } else {
+                $calif_tercer = (int)$tercer;
+            }
+            array_push($calificaciones, $calif_tercer);
+        }
+
+        
+        // Hacemos la suma del array
+        $suma = array_sum($calificaciones);
+
+        // Contamos cuantos elementos hay en el array
+        $total_numeros = count($calificaciones);
+
+        // Realizamos el promedio
+        $media = $suma/$total_numeros;
+
+        // Realizamos el redondeo
+        $promedio = round($media);
+
+
+        return $promedio;
+    }
 }

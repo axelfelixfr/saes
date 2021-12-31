@@ -33,7 +33,6 @@ $(document).ready(() => {
     });
 });
 
-
 // Toggle para sidebar
 window.addEventListener('DOMContentLoaded', event => {
 

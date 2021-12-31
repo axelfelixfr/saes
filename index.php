@@ -3,6 +3,7 @@
 ob_start();
 
 session_start();
+header("Cache-Control: no-cache, must-revalidate"); // HTTP/1.1
 header('Content-Type: text/html; charset=UTF-8');
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, OPTIONS");
@@ -13,14 +14,25 @@ require_once 'config/db.php';
 require_once 'config/parameters.php';
 require_once 'helpers/utils.php';
 
-if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['tabName']) && !empty($_POST['tabName'])) {
+if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['actionAjax']) && !empty($_POST['actionAjax'])) {
     $typeUser = $_POST['user'];
-    $tabName = $_POST['tabName'];
-
-    if ($typeUser == "alumno") {
+    $actionAjax = $_POST['actionAjax'];
+    if ($typeUser == "user") {
+        $nameController = 'userController';
+        $controlador = new $nameController();
+        switch ($actionAjax) {
+            case 'login':
+                $action = 'login';
+                $controlador->$action();
+                exit();
+            break;
+            default:
+                exit();
+        }
+    } elseif ($typeUser == "alumno") {
         $nameController = 'alumnoAjax';
         $controlador = new $nameController();
-        switch ($tabName) {
+        switch ($actionAjax) {
             case 'tabAlumnoGeneral':
                 $action = 'updateGeneral';
                 $controlador->$action();
@@ -35,10 +47,29 @@ if (isset($_POST['user']) && !empty($_POST['user']) && isset($_POST['tabName']) 
                 $action = 'updateDireccion';
                 $controlador->$action();
                 exit();
+            break;
             case 'tabAlumnoTutor':
                 $action = 'updateTutor';
                 $controlador->$action();
                 exit();
+            break;
+            default:
+                exit();
+        }
+    } elseif ($typeUser == "profesor") {
+        $nameController = 'profesorAjax';
+        $controlador = new $nameController();
+        switch ($actionAjax) {
+            case 'calificarAlumnos':
+                $action = 'evaluacionAlumnos';
+                $controlador->$action();
+                exit();
+            break;
+            case 'cerrarActaEvaluacion':
+                $action = 'terminarEvaluacion';
+                $controlador->$action();
+                exit();
+            break;
             default:
                 exit();
         }

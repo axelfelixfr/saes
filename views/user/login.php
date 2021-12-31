@@ -78,7 +78,6 @@
                         <?= $_SESSION['identity']->general->nombre ?>
                         <?= $_SESSION['identity']->general->apellidos ?></span></h2>
                 <?php endif; ?>
-                <!-- <a href="<?=base_url?>user/logout">Cerrar sesión</a> -->
             </div>
             <!-- Inicio del Login-->
             <?php if (!isset($_SESSION['identity'])) :?>

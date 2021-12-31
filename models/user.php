@@ -59,8 +59,8 @@ class User
             // array_push($dataUser, $usuario);
             
             // Se saca su dirección
-            $usuario_id = $usuario->id;
-            $sqlDireccion = "SELECT * FROM direccion WHERE usuario_id = '$usuario_id'";
+            $usuario_clave = $usuario->clave_usuario;
+            $sqlDireccion = "SELECT * FROM direccion WHERE usuario_clave = '$usuario_clave'";
             $getDireccion = $this->db->query($sqlDireccion);
 
             if ($getDireccion && $getDireccion->num_rows == 1) {
@@ -73,28 +73,49 @@ class User
             $perfil = $usuario->perfil_name;
 
             if ($perfil == "alumno") {
-                $sqlEscolaridad = "SELECT * FROM escolaridad WHERE alumno_id = '$usuario_id'";
+                // Se obtiene la información sobre escolaridad del alumno
+                $sqlEscolaridad = "SELECT * FROM escolaridad WHERE alumno_clave = '$usuario_clave'";
                 $getEscolaridad = $this->db->query($sqlEscolaridad);
 
                 if ($getEscolaridad && $getEscolaridad->num_rows == 1) {
                     $escolaridad = $getEscolaridad->fetch_object();
                     $dataUser["escolaridad"] = $escolaridad;
-                    // array_push($dataUser, $escolaridad);
                 }
 
-                $sqlTutor = "SELECT * FROM tutor WHERE alumno_id = '$usuario_id'";
+                // Se obtiene la información sobre tutor del alumno
+                $sqlTutor = "SELECT * FROM tutor WHERE alumno_clave = '$usuario_clave'";
                 $getTutor = $this->db->query($sqlTutor);
 
                 if ($getTutor && $getTutor->num_rows == 1) {
                     $tutor = $getTutor->fetch_object();
                     $dataUser["tutor"] = $tutor;
-
-                    // array_push($dataUser, $tutor);
                 }
 
+                // Se obtiene la información sobre el horario del alumno
+                $sqlHorario = "SELECT asig.secuencia, asig.descripcion, asig.lunes, asig.martes, asig.miercoles, asig.jueves, asig.viernes, asig.sabado, asig.carrera, asig.edificio, asig.salon, asig.especialidad, asig.periodo_escolar, asig.plan_estudios, insc.asignatura_clave, profe.nombre, profe.apellidos FROM asignatura asig INNER JOIN usuario profe ON asig.profesor_clave = profe.clave_usuario INNER JOIN inscripcion insc ON asig.materia_clave = insc.asignatura_clave WHERE insc.alumno_clave = '$usuario_clave'";
+                $getHorario = $this->db->query($sqlHorario);
+                
+                $horarioAsignaturas = array();
+                while ($asig = mysqli_fetch_object($getHorario)) {
+                    $horarioAsignaturas[] = $asig;
+                }
+                
+                $dataUser["horario"] = $horarioAsignaturas;
+                
                 // return $dataAlumno;
             } elseif ($perfil == "profesor") {
-                $result = "Se trata de un profesor";
+                // Se obtienen las asignaturas del profesor
+                $sqlAsignaturas = "SELECT * FROM asignatura WHERE profesor_clave = '$usuario_clave'";
+                $getAsignaturas = $this->db->query($sqlAsignaturas);
+
+                $arrayAsignaturas = array();
+                while ($asig = mysqli_fetch_object($getAsignaturas)) {
+                    $arrayAsignaturas[] = $asig;
+                }
+                
+                $dataUser["asignaturas"] = $arrayAsignaturas;
+
+                // $result = "Se trata de un profesor";
             } else {
                 $result = false;
             }

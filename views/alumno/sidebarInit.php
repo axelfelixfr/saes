@@ -43,13 +43,13 @@
                     <div class="sb-sidenav-menu-heading">En curso</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseInscripcion" aria-expanded="false" aria-controls="collapseInscripcion">
                         <div class="sb-nav-link-icon"><i class="fas fa-graduation-cap"></i></div>
-                        Inscripción Actual
+                        Inscripción actual
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
                     <div class="collapse" id="collapseInscripcion" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link py-1 nav-ipn-item" href="#">Horario</a>
-                            <a class="nav-link py-1 nav-ipn-item" href="#">Calificaciones</a>
+                            <a class="nav-link py-1 nav-ipn-item" href="<?=base_url?>alumno/horario">Horario</a>
+                            <a class="nav-link py-1 nav-ipn-item" href="<?=base_url?>alumno/calificaciones">Calificaciones</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseReinscripcion" aria-expanded="false" aria-controls="collapseReinscripcion">

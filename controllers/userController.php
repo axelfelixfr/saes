@@ -21,39 +21,48 @@ class userController
 
     public function login()
     {
-        if (isset($_POST)) {
+        if (isset($_POST['actionAjax'])) {
+            if (isset($_POST['email']) && !empty($_POST['email']) && isset($_POST['password']) && !empty($_POST['password'])) {
             // Identificar al usuario
             // Consulta a la base de datos
-            $user = new User();
-            $user->setEmail($_POST['email']);
-            $user->setPassword($_POST['password']);
+                $user = new User();
+                $user->setEmail($_POST['email']);
+                $user->setPassword($_POST['password']);
             
-            $identity = $user->login();
+                $identity = $user->login();
             // $_SESSION['nueva'] = $identity;
 // header("Location:".base_url);
 // die();
             // Crear una sesión
-            if ($identity && is_object($identity)) {
-                // Se guarda al usuario en identity
-                $_SESSION['identity'] = $identity;
+                if ($identity && is_object($identity)) {
+                    // Se guarda al usuario en identity
+                    $_SESSION['identity'] = $identity;
 
-                // Se pasa a false al pasar el login
-                if (isset($_SESSION['error_login']) && $_SESSION['error_login']) {
-                    $_SESSION['error_login'] = false;
+                    // Se pasa a false al pasar el login
+                    if (isset($_SESSION['error_login']) && $_SESSION['error_login']) {
+                        $_SESSION['error_login'] = false;
+                    }
+
+                    // Se identifica si es profesor o alumno
+                    if ($identity->general->perfil_name == 'profesor') {
+                        $_SESSION['profesor'] = true;
+                        // header("Location:".base_url."profesor/main");
+                    } elseif ($identity->general->perfil_name == 'alumno') {
+                        $_SESSION['alumno'] = true;
+                        // header("Location:".base_url."alumno/main");
+                    }
+
+                    $perfil = $_SESSION['identity']->general;
+
+                    $perfilJson = json_encode($perfil, JSON_UNESCAPED_UNICODE);
+                    echo $perfilJson;
+
+                    // Algo fallo en el login
+                } else {
+                    $_SESSION['error_login'] = true;
+                    header("Location:".base_url);
                 }
-
-                // Se identifica si es profesor o alumno
-                if ($identity->general->perfil_name == 'profesor') {
-                    $_SESSION['profesor'] = true;
-                    header("Location:".base_url.'profesor/main');
-                } elseif ($identity->general->perfil_name == 'alumno') {
-                    $_SESSION['alumno'] = true;
-                    header("Location:".base_url.'alumno/main');
-                }
-
-                // Algo fallo en el login
             } else {
-                $_SESSION['error_login'] = true;
                 header("Location:".base_url);
             }
         } else {
